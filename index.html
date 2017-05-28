@@ -60,7 +60,7 @@
 		//this function starts the game and rolls the dice to begin                                                                                                                                                         
 		function startGame() 
 		{
-		//this function only works at the begining of the game and once a player's turn has been completed                                                                                                                 
+		//this function only works at the begining of the game and once a player's turn has been completed  
 				if(RollAmt==1 || RollAmt==2)
 				{
 				return
@@ -81,6 +81,12 @@
 				return
 				}
 				}
+								if(player1turns == player2turns && player1turns == 0)
+				{
+				alert("Restart the Game!")
+				return
+				}
+
 		//after the game starts, instead of saying "Start Game," it says "Play Next Turn" instead                                                             
 		btnStart.value= "Play Next Turn"
 			//resets the roll amount from 0 to 3
@@ -342,6 +348,25 @@
 							diceFive.src="nextturn.jpg"
 							}
 						}
+										if(player1turns == player2turns && player1turns == 0)
+				{
+				if(p1score>p2score)
+				{
+				alert("Player 1 Wins!")
+				return
+				}
+				if(p1score<p2score)
+				{
+				alert("Player 2 Wins!")
+				return
+				}
+				if(p1score==p2score)
+				{
+				alert("It is a Tie!")
+				return
+				}
+				}
+
 				}
 		function holdTwo()
 				{
@@ -482,6 +507,25 @@
 							diceFive.src="nextturn.jpg"
 							}
 						}
+										if(player1turns == player2turns && player1turns == 0)
+				{
+				if(p1score>p2score)
+				{
+				alert("Player 1 Wins!")
+				return
+				}
+				if(p1score<p2score)
+				{
+				alert("Player 2 Wins!")
+				return
+				}
+				if(p1score==p2score)
+				{
+				alert("It is a Tie!")
+				return
+				}
+				}
+
 				}
 		function holdThree()
 				{
@@ -621,6 +665,25 @@
 							diceFive.src="nextturn.jpg"
 							}
 						}
+										if(player1turns == player2turns && player1turns == 0)
+				{
+				if(p1score>p2score)
+				{
+				alert("Player 1 Wins!")
+				return
+				}
+				if(p1score<p2score)
+				{
+				alert("Player 2 Wins!")
+				return
+				}
+				if(p1score==p2score)
+				{
+				alert("It is a Tie!")
+				return
+				}
+				}
+
 				}
 		function holdFour()
 				{
@@ -760,6 +823,25 @@
 							diceFive.src="nextturn.jpg"
 							}
 						}
+										if(player1turns == player2turns && player1turns == 0)
+				{
+				if(p1score>p2score)
+				{
+				alert("Player 1 Wins!")
+				return
+				}
+				if(p1score<p2score)
+				{
+				alert("Player 2 Wins!")
+				return
+				}
+				if(p1score==p2score)
+				{
+				alert("It is a Tie!")
+				return
+				}
+				}
+
 				}
 		function holdFive()
 				{
@@ -900,6 +982,25 @@
 							diceFive.src="nextturn.jpg"
 							}
 						}
+										if(player1turns == player2turns && player1turns == 0)
+				{
+				if(p1score>p2score)
+				{
+				alert("Player 1 Wins!")
+				return
+				}
+				if(p1score<p2score)
+				{
+				alert("Player 2 Wins!")
+				return
+				}
+				if(p1score==p2score)
+				{
+				alert("It is a Tie!")
+				return
+				}
+				}
+
 				}
 		function holdSix()
 				{
@@ -1039,6 +1140,25 @@
 							diceFive.src="nextturn.jpg"
 							}
 						}
+										if(player1turns == player2turns && player1turns == 0)
+				{
+				if(p1score>p2score)
+				{
+				alert("Player 1 Wins!")
+				return
+				}
+				if(p1score<p2score)
+				{
+				alert("Player 2 Wins!")
+				return
+				}
+				if(p1score==p2score)
+				{
+				alert("It is a Tie!")
+				return
+				}
+				}
+
 				}
 		function threeOfKind()
 			{
@@ -1263,6 +1383,25 @@
 								diceFive.src="nextturn.jpg"
 								}
 							}	
+											if(player1turns == player2turns && player1turns == 0)
+				{
+				if(p1score>p2score)
+				{
+				alert("Player 1 Wins!")
+				return
+				}
+				if(p1score<p2score)
+				{
+				alert("Player 2 Wins!")
+				return
+				}
+				if(p1score==p2score)
+				{
+				alert("It is a Tie!")
+				return
+				}
+				}
+
 							}
 			function fullHouse()
 			{
@@ -1367,6 +1506,25 @@
 								diceFive.src="nextturn.jpg"
 								}
 							}
+											if(player1turns == player2turns && player1turns == 0)
+				{
+				if(p1score>p2score)
+				{
+				alert("Player 1 Wins!")
+				return
+				}
+				if(p1score<p2score)
+				{
+				alert("Player 2 Wins!")
+				return
+				}
+				if(p1score==p2score)
+				{
+				alert("It is a Tie!")
+				return
+				}
+				}
+
 			//resets dice value to zero
 						dice1=0
 						dice2=0
@@ -1707,6 +1865,25 @@
 								diceFive.src="nextturn.jpg"
 								}
 							}
+											if(player1turns == player2turns && player1turns == 0)
+				{
+				if(p1score>p2score)
+				{
+				alert("Player 1 Wins!")
+				return
+				}
+				if(p1score<p2score)
+				{
+				alert("Player 2 Wins!")
+				return
+				}
+				if(p1score==p2score)
+				{
+				alert("It is a Tie!")
+				return
+				}
+				}
+
 			//resets dice values to zero
 						dice1=0
 						dice2=0
@@ -2042,6 +2219,25 @@
 										diceFive.src="nextturn.jpg"
 										}
 									}
+													if(player1turns == player2turns && player1turns == 0)
+				{
+				if(p1score>p2score)
+				{
+				alert("Player 1 Wins!")
+				return
+				}
+				if(p1score<p2score)
+				{
+				alert("Player 2 Wins!")
+				return
+				}
+				if(p1score==p2score)
+				{
+				alert("It is a Tie!")
+				return
+				}
+				}
+
 			//dice values reset to zero						
 								dice1=0
 								dice2=0
@@ -2140,6 +2336,25 @@
 										diceFive.src="nextturn.jpg"
 										}
 									}
+													if(player1turns == player2turns && player1turns == 0)
+				{
+				if(p1score>p2score)
+				{
+				alert("Player 1 Wins!")
+				return
+				}
+				if(p1score<p2score)
+				{
+				alert("Player 2 Wins!")
+				return
+				}
+				if(p1score==p2score)
+				{
+				alert("It is a Tie!")
+				return
+				}
+				}
+
 			//reset dice value to zero			
 								dice1=0
 								dice2=0
@@ -2263,7 +2478,25 @@
 					yesno5[1].checked=false;
 						}
 					
-					
+									if(player1turns == player2turns && player1turns == 0)
+				{
+				if(p1score>p2score)
+				{
+				alert("Player 1 Wins!")
+				return
+				}
+				if(p1score<p2score)
+				{
+				alert("Player 2 Wins!")
+				return
+				}
+				if(p1score==p2score)
+				{
+				alert("It is a Tie!")
+				return
+				}
+				}
+
 					
 		}
 		
