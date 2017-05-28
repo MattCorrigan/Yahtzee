@@ -1,0 +1,13 @@
+{
+  "name": "yahtzee",
+  "version": "10.3.1",
+  "description": "",
+  "author": "Michael Murakami",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "*",
+  },
+  "license": "MIT"
+}
