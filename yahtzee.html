@@ -1,0 +1,2394 @@
+<!DOCTYPE HTML>
+<html>
+<link rel=stylesheet type=text/css href="Yahtzee.css">
+	<head>
+		<title>Yahtzee!</title>
+		<head>
+	<script>
+		//variable for the amount of turns players have remaining
+		var player1turns = 12; 
+		var player2turns = 12;
+		//sets the dice equal to zero to start, and holds the value through the functions
+		var dice1 = 0;
+		var dice2 = 0;
+		var dice3 = 0;
+		var dice4 = 0;
+		var dice5 = 0;
+		//array of dice images
+		diceArray=["","dice1.jpg","dice2.jpg","dice3.jpg","dice4.jpg","dice5.jpg","dice6.jpg"]
+		//holds the value of the scores of the players, starting at zero
+		var p2score = 0;
+		var p1score = 0;
+		//begins the game with player 1, and switches as the game continues
+		var p1turn = true;
+		var p2turn = false;
+		//each turn has three rolls, this holds the amount remaining per turn
+		var RollAmt = 3;
+		//holds value 1 when a player has not used this score before, and at 0 doesn't allow them to do it again in the same game (S1==score 1, S2==score 2, S3...3k==3 of kind, 4k==4 of kind,FH==Full house, SS==Small straight, LS==Large Straight, CH==chance, YZ==Yahzee)
+		var p1S1 = 1;
+		var p1S2 = 1;
+		var p1S3 = 1;
+		var p1S4 = 1;
+		var p1S5 = 1;
+		var p1S6 = 1;
+		var p2S1 = 1;
+		var p2S2 = 1;
+		var p2S3 = 1;
+		var p2S4 = 1;
+		var p2S5 = 1;
+		var p2S6 = 1;
+		var p13k = 1;
+		var p23k = 1;
+		var p14k = 1;
+		var p24k = 1;
+		var p1FH = 1;
+		var p2FH = 1;
+		var p1SS = 1;
+		var p2SS = 1;
+		var p1LS = 1;
+		var p2LS = 1;
+		var p1CH = 1;
+		var p2CH = 1;
+		var p1YZ = 0;
+		var p2YZ = 0;
+		
+		var yesno1 = document.getElementsByName("choose1")
+		var yesno2 = document.getElementsByName("choose2")
+		var yesno3 = document.getElementsByName("choose3")
+		var yesno4 = document.getElementsByName("choose4")
+		var yesno5 = document.getElementsByName("choose5")
+		//this function starts the game and rolls the dice to begin                                                                                                                                                         
+		function startGame() 
+		{
+		//this function only works at the begining of the game and once a player's turn has been completed                                                                                                                 
+				if(RollAmt==1 || RollAmt==2)
+				{
+				return
+				}
+				if(p1turn)
+				{
+				if(player1turns == player2turns - 1)
+				{
+				alert("Player 1 Needs To Score!")
+				return
+				}
+				}
+				if(p2turn)
+				{
+				if(player1turns == player2turns)
+				{
+				alert("Player 2 Needs To Score")
+				return
+				}
+				}
+		//after the game starts, instead of saying "Start Game," it says "Play Next Turn" instead                                                             
+		btnStart.value= "Play Next Turn"
+			//resets the roll amount from 0 to 3
+			RollAmt=3;
+			//displays in page
+			Rolls.innerHTML=RollAmt;
+			//rolls dice if it is player 1's turn, this way player 1 turns goes down, not player two
+				if(p1turn)
+				{
+				//makes all the dice numbers 1-6
+				dice1=Math.floor((Math.random() * 6)+1);
+				diceOne.src=diceArray[dice1];
+				dice2=Math.floor((Math.random() * 6)+1);
+				diceTwo.src=diceArray[dice2];
+				dice3=Math.floor((Math.random() * 6)+1);
+				diceThree.src=diceArray[dice3];
+				dice4=Math.floor((Math.random() * 6)+1);
+				diceFour.src=diceArray[dice4];
+				dice5=Math.floor((Math.random() * 6)+1);
+				diceFive.src=diceArray[dice5];
+				player1turns--;
+				p1turns.innerHTML=player1turns;
+				RollAmt--;
+				Rolls.innerHTML=RollAmt;
+				return
+				}
+			//opposite as above	
+			else if(p2turn)
+				{
+				dice1=Math.floor((Math.random() * 6)+1);
+				diceOne.src=diceArray[dice1];
+				dice2=Math.floor((Math.random() * 6)+1);
+				diceTwo.src=diceArray[dice2];
+				dice3=Math.floor((Math.random() * 6)+1);
+				diceThree.src=diceArray[dice3];
+				dice4=Math.floor((Math.random() * 6)+1);
+				diceFour.src=diceArray[dice4];
+				dice5=Math.floor((Math.random() * 6)+1);
+				diceFive.src=diceArray[dice5];
+				player2turns--;
+				p2turns.innerHTML=player2turns;
+				RollAmt--;
+				Rolls.innerHTML=RollAmt;
+				return
+				}
+		}
+			//this function rolls the dice the second and third times, only the dice the player wants to re-roll
+		function changeDice()
+		{			
+			//only works if it is the second or third rolls
+				if(RollAmt == 0 || RollAmt == 3)
+					{
+					return
+					} 
+				if(RollAmt>0)
+				{
+			//subtracts a roll for using function
+					RollAmt--;
+					Rolls.innerHTML=RollAmt;
+			//these next lines only change the dice if the player wants them to change, if they say yes (to holding them) then they don't change, if they say no (to holding them) they re-roll, and otherwise alerts to fill in properly	
+					if (yesno1[0].checked)
+						{
+						dice1=dice1;
+						}
+					else if (yesno1[1].checked)
+						{
+						dice1=Math.floor((Math.random() * 6)+1);
+						diceOne.src=diceArray[dice1];
+						}	
+					if (yesno2[0].checked)
+						{
+						dice2=dice2;
+						}
+					else if (yesno2[1].checked)
+						{
+						dice2=Math.floor((Math.random() * 6)+1);
+						diceTwo.src=diceArray[dice2];
+						}
+					
+					if (yesno3[0].checked)
+						{
+						dice3=dice3;
+						}
+					else if (yesno3[1].checked)
+						{
+						dice3=Math.floor((Math.random() * 6)+1);
+						diceThree.src=diceArray[dice3];
+						}
+					if (yesno4[0].checked)
+						{
+						dice4=dice4;
+						}
+					else if (yesno4[1].checked)
+						{
+						dice4=Math.floor((Math.random() * 6)+1);
+						diceFour.src=diceArray[dice4];
+						}
+				
+					if (yesno5[0].checked)
+						{
+						dice5=dice5;
+						}
+					else if (yesno5[1].checked)
+						{
+						dice5=Math.floor((Math.random() * 6)+1);
+						diceFive.src=diceArray[dice5];
+						}
+					else if(!yesno1[0].checked && !yesno1[1].checked 
+							||!yesno2[0].checked && !yesno2[1].checked
+							||!yesno3[0].checked && !yesno3[1].checked
+							||!yesno4[0].checked && !yesno4[1].checked
+							||!yesno5[0].checked && !yesno5[1].checked)
+								{
+								alert("Please select all buttons!");
+								}
+				}
+			//if they have 0 rolls remaining, it tells them to let the other player have their turn
+				else if(RollAmt==0)
+					{
+					alert("Next Player's Turn!")
+					}
+		}
+	
+			//this funtion scores the values of the 1s of the dice
+		function holdOne()
+				{
+			//what happens at the end of any scoring function, all dice values are set to 0, making no functions work so players can't score the same rolls twice
+					if(dice1 == 0)
+					{
+					return
+					}
+			//players can only score if they are out of rolls
+					if(RollAmt == 1 || RollAmt == 2)
+					{
+					alert("Please Use All Rolls")
+					return
+					} 
+			//this alerts players that they can not score the same number twice in the same game (if they are trying to)
+					if(p1turn)
+						{
+						if(p1S1 == 0)
+							{
+							alert("You Cannot Score This Number Again!");
+							return
+							}
+						}
+					if (p2turn)
+						{
+						if(p2S1 == 0)
+							{
+							alert("You Cannot Score This Number Again!");
+							return
+							}
+						}
+			//takes away another roll, so that a separate part works later
+					RollAmt--
+			//the next lines check the values. If they are 1, they hold the value, otherwise they become equal to 0, making the value in the dicesum only the values of the number being scored
+					if(dice1==1)
+						{
+						dice1=dice1;
+						}	
+					else if(dice1!=1)
+						{
+						dice1=0;
+						}
+						
+					if(dice2==1)
+						{
+						dice2=dice2;
+						}
+					else if(dice2!=1)
+						{
+						dice2=0;
+						}
+						
+					if(dice3==1)
+						{
+						dice3=dice3;
+						}	
+					else if(dice3!=1)
+						{
+						dice3=0;
+						}
+						
+					if(dice4==1)
+						{
+						dice4=dice4;
+						}
+					else if(dice4!=1)
+						{
+						dice4=0;
+						}
+						
+					if(dice5==1)
+						{
+						dice5=dice5;
+						}
+					else if(dice5!=1)
+						{
+						dice5=0;
+						}
+			//diceSum adds the values of the number together, and then adds to the respective score
+					var diceSum = dice1 + dice2 + dice3 + dice4 + dice5;
+			//if player 1's turn, they get the score, otherwise it goes to player two
+					if(p1turn)
+						{
+						p1score = p1score + diceSum;
+						score1.innerHTML = p1score;
+						p1S1--;
+						P1S1.innerHTML="Has Scored";
+						}
+					if(p2turn)
+						{
+						p2score = p2score + diceSum;
+						score2.innerHTML = p2score;
+						p2S1--;
+						P2S1.innerHTML="Has Scored";
+						}
+			//sets all of the dice values to 0
+					dice1=0
+					dice2=0
+					dice3=0
+					dice4=0
+					dice5=0
+					yesno1[0].checked=false;
+					yesno1[1].checked=false;
+					yesno2[0].checked=false;
+					yesno2[1].checked=false;
+					yesno3[0].checked=false;
+					yesno3[1].checked=false;
+					yesno4[0].checked=false;
+					yesno4[1].checked=false;
+					yesno5[0].checked=false;
+					yesno5[1].checked=false;
+			//because of the subtraction earlier, the roll amount should be negative 1, and this allows this to reset the rolls in both the variable and on the page
+					if(RollAmt == -1)
+						{
+						RollAmt = 3;
+						Rolls.innerHTML=RollAmt;
+			//if it is the player 1's turn, it turns to player two and likewise, also makes all dice value on the page into "Next Player's Turn" to force them to start the new turn
+						if(p1turn)
+							{
+							p1turn=false;
+							p2turn=true;
+							diceOne.src="nextturn.jpg"
+							diceTwo.src="nextturn.jpg"
+							diceThree.src="nextturn.jpg"
+							diceFour.src="nextturn.jpg"
+							diceFive.src="nextturn.jpg"
+							}
+						else if(p2turn)
+							{
+							p2turn=false;
+							p1turn=true;
+							diceOne.src="nextturn.jpg"
+							diceTwo.src="nextturn.jpg"
+							diceThree.src="nextturn.jpg"
+							diceFour.src="nextturn.jpg"
+							diceFive.src="nextturn.jpg"
+							}
+						}
+				}
+		function holdTwo()
+				{
+				//what happens at the end of any scoring function, all dice values are set to 0, making no functions work so players can't score the same rolls twice
+					if(dice1 == 0)
+					{
+					return
+					}
+				//players can only score if they are out of rolls
+					if(RollAmt == 1 || RollAmt == 2)
+					{
+					alert("Please Use All Rolls")
+					return
+					}
+				//this alerts players that they can not score the same number twice in the same game (if they are trying to)
+					if(p1turn)
+						{
+						if(p1S2 == 0)
+							{
+							alert("You Cannot Score This Number Again!");
+							return
+							}
+						}
+					if (p2turn)
+						{
+						if(p2S2 == 0)
+							{
+							alert("You Cannot Score This Number Again!");
+							return
+							}
+						}
+			//takes away another roll, so that a separate part works later
+					RollAmt--
+			//the next lines check the values. If they are 2, they hold the value, otherwise they become equal to 0, making the value in the dicesum only the values of the number being scored
+					if(dice1==2)
+						{
+						dice1=dice1;
+						}	
+					else if(dice1!=2)
+						{
+						dice1=0;
+						}
+						
+					if(dice2==2)
+						{
+						dice2=dice2;
+						}
+					else if(dice2!=2)
+						{
+						dice2=0;
+						}
+						
+					if(dice3==2)
+						{
+						dice3=dice3;
+						}	
+					else if(dice3!=2)
+						{
+						dice3=0;
+						}
+						
+					if(dice4==2)
+						{
+						dice4=dice4;
+						}
+					else if(dice4!=2)
+						{
+						dice4=0;
+						}
+						
+					if(dice5==2)
+						{
+						dice5=dice5;
+						}
+					else if(dice5!=2)
+						{
+						dice5=0;
+						}
+							
+			//diceSum adds the values of the number together, and then adds to the respective score
+					var diceSum = dice1 + dice2 + dice3 + dice4 + dice5;
+			//if player 1's turn, they get the score, otherwise it goes to player two
+					if(p1turn)
+						{
+						p1score = p1score + diceSum;
+						score1.innerHTML = p1score;
+						p1S2--
+						P1S2.innerHTML="Has Scored";
+						}
+					if(p2turn)
+						{
+						p2score = p2score + diceSum;
+						score2.innerHTML = p2score;
+						p2S2--
+						P2S2.innerHTML="Has Scored";
+						}
+			//sets all of the dice values to 0
+					dice1=0
+					dice2=0
+					dice3=0
+					dice4=0
+					dice5=0
+					
+					yesno1[0].checked=false;
+					yesno1[1].checked=false;
+					yesno2[0].checked=false;
+					yesno2[1].checked=false;
+					yesno3[0].checked=false;
+					yesno3[1].checked=false;
+					yesno4[0].checked=false;
+					yesno4[1].checked=false;
+					yesno5[0].checked=false;
+					yesno5[1].checked=false;
+			//because of the subtraction earlier, the roll amount should be negative 1, and this allows this to reset the rolls in both the variable and on the page
+					if(RollAmt == -1)
+						{
+						RollAmt = 3;
+						Rolls.innerHTML=RollAmt;
+			//if it is the player 1's turn, it turns to player two and likewise, also makes all dice value on the page into "Next Player's Turn" to force them to start the new turn
+					if(p1turn)
+							{
+							p1turn=false;
+							p2turn=true;
+							diceOne.src="nextturn.jpg"
+							diceTwo.src="nextturn.jpg"
+							diceThree.src="nextturn.jpg"
+							diceFour.src="nextturn.jpg"
+							diceFive.src="nextturn.jpg"
+							}
+						else if(p2turn)
+							{
+							p2turn=false;
+							p1turn=true;
+							diceOne.src="nextturn.jpg"
+							diceTwo.src="nextturn.jpg"
+							diceThree.src="nextturn.jpg"
+							diceFour.src="nextturn.jpg"
+							diceFive.src="nextturn.jpg"
+							}
+						}
+				}
+		function holdThree()
+				{
+			//what happens at the end of any scoring function, all dice values are set to 0, making no functions work so players can't score the same rolls twice
+					if(dice1 == 0)
+					{
+					return
+					}
+			//players can only score if they are out of rolls
+					if(RollAmt == 1 || RollAmt == 2)
+					{
+					alert("Please Use All Rolls")
+					return
+					} 
+			//this alerts players that they can not score the same number twice in the same game (if they are trying to)
+					if(p1turn)
+						{
+						if(p1S3 == 0)
+							{
+							alert("You Cannot Score This Number Again!");
+							return
+							}
+						}
+					if (p2turn)
+						{
+						if(p2S3 == 0)
+							{
+							alert("You Cannot Score This Number Again!");
+							return
+							}
+						}
+			//takes away another roll, so that a separate part works later
+					RollAmt--
+			//the next lines check the values. If they are 3, they hold the value, otherwise they become equal to 0, making the value in the dicesum only the values of the number being scored
+					if(dice1==3)
+						{
+						dice1=dice1;
+						}	
+					else if(dice1!=3)
+						{
+						dice1=0;
+						}
+						
+					if(dice2==3)
+						{
+						dice2=dice2;
+						}
+					else if(dice2!=3)
+						{
+						dice2=0;
+						}
+						
+					if(dice3==3)
+						{
+						dice3=dice3;
+						}	
+					else if(dice3!=3)
+						{
+						dice3=0;
+						}
+						
+					if(dice4==3)
+						{
+						dice4=dice4;
+						}
+					else if(dice4!=3)
+						{
+						dice4=0;
+						}
+						
+					if(dice5==3)
+						{
+						dice5=dice5;
+						}
+					else if(dice5!=3)
+						{
+						dice5=0;
+						}
+							
+			//diceSum adds the values of the number together, and then adds to the respective score
+					var diceSum = dice1 + dice2 + dice3 + dice4 + dice5;
+			//if player 1's turn, they get the score, otherwise it goes to player two
+					if(p1turn)
+						{
+						p1score = p1score + diceSum;
+						score1.innerHTML = p1score;
+						p1S3--
+						P1S3.innerHTML="Has Scored";
+						}
+					if(p2turn)
+						{
+						p2score = p2score + diceSum;
+						score2.innerHTML = p2score;
+						p2S3--
+						P2S3.innerHTML="Has Scored";
+						}
+			//sets all of the dice values to 0
+					dice1=0
+					dice2=0
+					dice3=0
+					dice4=0
+					dice5=0
+					yesno1[0].checked=false;
+					yesno1[1].checked=false;
+					yesno2[0].checked=false;
+					yesno2[1].checked=false;
+					yesno3[0].checked=false;
+					yesno3[1].checked=false;
+					yesno4[0].checked=false;
+					yesno4[1].checked=false;
+					yesno5[0].checked=false;
+					yesno5[1].checked=false;
+			//because of the subtraction earlier, the roll amount should be negative 1, and this allows this to reset the rolls in both the variable and on the page
+					if(RollAmt == -1)
+						{
+						RollAmt = 3;
+						Rolls.innerHTML=RollAmt;
+			//if it is the player 1's turn, it turns to player two and likewise, also makes all dice value on the page into "Next Player's Turn" to force them to start the new turn
+					if(p1turn)
+							{
+							p1turn=false;
+							p2turn=true;
+							diceOne.src="nextturn.jpg"
+							diceTwo.src="nextturn.jpg"
+							diceThree.src="nextturn.jpg"
+							diceFour.src="nextturn.jpg"
+							diceFive.src="nextturn.jpg"
+							}
+						else if(p2turn)
+							{
+							p2turn=false;
+							p1turn=true;
+							diceOne.src="nextturn.jpg"
+							diceTwo.src="nextturn.jpg"
+							diceThree.src="nextturn.jpg"
+							diceFour.src="nextturn.jpg"
+							diceFive.src="nextturn.jpg"
+							}
+						}
+				}
+		function holdFour()
+				{
+			//what happens at the end of any scoring function, all dice values are set to 0, making no functions work so players can't score the same rolls twice
+					if(dice1 == 0)
+					{
+					return
+					}
+			//players can only score if they are out of rolls
+					if(RollAmt == 1 || RollAmt == 2)
+					{
+					alert("Please Use All Rolls")
+					return
+					} 
+			//this alerts players that they can not score the same number twice in the same game (if they are trying to)
+					if(p1turn)
+						{
+						if(p1S4 == 0)
+							{
+							alert("You Cannot Score This Number Again!");
+							return
+							}
+						}
+					if (p2turn)
+						{
+						if(p2S4 == 0)
+							{
+							alert("You Cannot Score This Number Again!");
+							return
+							}
+						}
+			//takes away another roll, so that a separate part works later
+					RollAmt--
+			//the next lines check the values. If they are 4, they hold the value, otherwise they become equal to 0, making the value in the dicesum only the values of the number being scored
+					if(dice1==4)
+						{
+						dice1=dice1;
+						}	
+					else if(dice1!=4)
+						{
+						dice1=0;
+						}
+						
+					if(dice2==4)
+						{
+						dice2=dice2;
+						}
+					else if(dice2!=4)
+						{
+						dice2=0;
+						}
+						
+					if(dice3==4)
+						{
+						dice3=dice3;
+						}	
+					else if(dice3!=4)
+						{
+						dice3=0;
+						}
+						
+					if(dice4==4)
+						{
+						dice4=dice4;
+						}
+					else if(dice4!=4)
+						{
+						dice4=0;
+						}
+						
+					if(dice5==4)
+						{
+						dice5=dice5;
+						}
+					else if(dice5!=4)
+						{
+						dice5=0;
+						}
+						
+			//diceSum adds the values of the number together, and then adds to the respective score
+					var diceSum = dice1 + dice2 + dice3 + dice4 + dice5;
+			//if player 1's turn, they get the score, otherwise it goes to player two
+					if(p1turn)
+						{
+						p1score = p1score + diceSum;
+						score1.innerHTML = p1score;
+						p1S4--
+						P1S4.innerHTML="Has Scored";
+						}
+					if(p2turn)
+						{
+						p2score = p2score + diceSum;
+						score2.innerHTML = p2score;
+						p2S4--
+						P2S4.innerHTML="Has Scored";
+						}
+			//sets all of the dice values to 0
+					dice1=0
+					dice2=0
+					dice3=0
+					dice4=0
+					dice5=0
+						yesno1[0].checked=false;
+					yesno1[1].checked=false;
+					yesno2[0].checked=false;
+					yesno2[1].checked=false;
+					yesno3[0].checked=false;
+					yesno3[1].checked=false;
+					yesno4[0].checked=false;
+					yesno4[1].checked=false;
+					yesno5[0].checked=false;
+					yesno5[1].checked=false;
+			//because of the subtraction earlier, the roll amount should be negative 1, and this allows this to reset the rolls in both the variable and on the page
+					if(RollAmt == -1)
+						{
+						RollAmt = 3;
+						Rolls.innerHTML=RollAmt;
+			//if it is the player 1's turn, it turns to player two and likewise, also makes all dice value on the page into "Next Player's Turn" to force them to start the new turn
+						if(p1turn)
+							{
+							p1turn=false;
+							p2turn=true;
+							diceOne.src="nextturn.jpg"
+							diceTwo.src="nextturn.jpg"
+							diceThree.src="nextturn.jpg"
+							diceFour.src="nextturn.jpg"
+							diceFive.src="nextturn.jpg"
+							}
+						else if(p2turn)
+							{
+							p2turn=false;
+							p1turn=true;
+							diceOne.src="nextturn.jpg"
+							diceTwo.src="nextturn.jpg"
+							diceThree.src="nextturn.jpg"
+							diceFour.src="nextturn.jpg"
+							diceFive.src="nextturn.jpg"
+							}
+						}
+				}
+		function holdFive()
+				{
+			//what happens at the end of any scoring function, all dice values are set to 0, making no functions work so players can't score the same rolls twice
+					if(dice1 == 0)
+					{
+					return
+					}
+			//players can only score if they are out of rolls
+					if(RollAmt == 1 || RollAmt == 2)
+					{
+					alert("Please Use All Rolls")
+					return
+					} 
+			//this alerts players that they can not score the same number twice in the same game (if they are trying to)
+					if(p1turn)
+						{
+						if(p1S5 == 0)
+							{
+							alert("You Cannot Score This Number Again!");
+							return
+							}
+						}
+					if (p2turn)
+						{
+						if(p2S5 == 0)
+							{
+							alert("You Cannot Score This Number Again!");
+							return
+							}
+						}
+			//takes away another roll, so that a separate part works later
+					RollAmt--
+			//the next lines check the values. If they are 5, they hold the value, otherwise they become equal to 0, making the value in the dicesum only the values of the number being scored
+					if(dice1==5)
+						{
+						dice1=dice1;
+						}	
+					else if(dice1!=5)
+						{
+						dice1=0;
+						}
+						
+					if(dice2==5)
+						{
+						dice2=dice2;
+						}
+					else if(dice2!=5)
+						{
+						dice2=0;
+						}
+						
+					if(dice3==5)
+						{
+						dice3=dice3;
+						}	
+					else if(dice3!=5)
+						{
+						dice3=0;
+						}
+						
+					if(dice4==5)
+						{
+						dice4=dice4;
+						}
+					else if(dice4!=5)
+						{
+						dice4=0;
+						}
+						
+					if(dice5==5)
+						{
+						dice5=dice5;
+						}
+					else if(dice5!=5)
+						{
+						dice5=0;
+						}
+					
+			//diceSum adds the values of the number together, and then adds to the respective score
+					var diceSum = dice1 + dice2 + dice3 + dice4 + dice5;
+			//if player 1's turn, they get the score, otherwise it goes to player two
+					if(p1turn)
+						{
+						p1score = p1score + diceSum;
+						score1.innerHTML = p1score;
+						p1S5--
+						P1S5.innerHTML="Has Scored";
+						}
+					if(p2turn)
+						{
+						p2score = p2score + diceSum;
+						score2.innerHTML = p2score;
+						p2S5--
+						P2S5.innerHTML="Has Scored";
+						}
+			//sets all of the dice values to 0
+					dice1=0
+					dice2=0
+					dice3=0
+					dice4=0
+					dice5=0
+					
+						yesno1[0].checked=false;
+					yesno1[1].checked=false;
+					yesno2[0].checked=false;
+					yesno2[1].checked=false;
+					yesno3[0].checked=false;
+					yesno3[1].checked=false;
+					yesno4[0].checked=false;
+					yesno4[1].checked=false;
+					yesno5[0].checked=false;
+					yesno5[1].checked=false;
+			//because of the subtraction earlier, the roll amount should be negative 1, and this allows this to reset the rolls in both the variable and on the page
+					if(RollAmt == -1)
+						{
+						RollAmt = 3;
+						Rolls.innerHTML=RollAmt;
+			//if it is the player 1's turn, it turns to player two and likewise, also makes all dice value on the page into "Next Player's Turn" to force them to start the new turn
+						if(p1turn)
+							{
+							p1turn=false;
+							p2turn=true;
+							diceOne.src="nextturn.jpg"
+							diceTwo.src="nextturn.jpg"
+							diceThree.src="nextturn.jpg"
+							diceFour.src="nextturn.jpg"
+							diceFive.src="nextturn.jpg"
+							}
+						else if(p2turn)
+							{
+							p2turn=false;
+							p1turn=true;
+							diceOne.src="nextturn.jpg"
+							diceTwo.src="nextturn.jpg"
+							diceThree.src="nextturn.jpg"
+							diceFour.src="nextturn.jpg"
+							diceFive.src="nextturn.jpg"
+							}
+						}
+				}
+		function holdSix()
+				{
+			//what happens at the end of any scoring function, all dice values are set to 0, making no functions work so players can't score the same rolls twice
+					if(dice1 == 0)
+					{
+					return
+					}
+			//players can only score if they are out of rolls
+					if(RollAmt == 1 || RollAmt == 2)
+					{
+					alert("Please Use All Rolls")
+					return
+					} 
+			//this alerts players that they can not score the same number twice in the same game (if they are trying to)
+					if(p1turn)
+						{
+						if(p1S6 == 0)
+							{
+							alert("You Cannot Score This Number Again!");
+							return
+							}
+						}
+					if (p2turn)
+						{
+						if(p2S6 == 0)
+							{
+							alert("You Cannot Score This Number Again!");
+							return
+							}
+						}
+			//takes away another roll, so that a separate part works later
+					RollAmt--
+			//the next lines check the values. If they are 5, they hold the value, otherwise they become equal to 0, making the value in the dicesum only the values of the number being scored
+					if(dice1==6)
+						{
+						dice1=dice1;
+						}	
+					else if(dice1!=6)
+						{
+						dice1=0;
+						}
+						
+					if(dice2==6)
+						{
+						dice2=dice2;
+						}
+					else if(dice2!=6)
+						{
+						dice2=0;
+						}
+						
+					if(dice3==6)
+						{
+						dice3=dice3;
+						}	
+					else if(dice3!=6)
+						{
+						dice3=0;
+						}
+						
+					if(dice4==6)
+						{
+						dice4=dice4;
+						}
+					else if(dice4!=6)
+						{
+						dice4=0;
+						}
+						
+					if(dice5==6)
+						{
+						dice5=dice5;
+						}
+					else if(dice5!=6)
+						{
+						dice5=0;
+						}
+			
+			//diceSum adds the values of the number together, and then adds to the respective score
+					var diceSum = dice1 + dice2 + dice3 + dice4 + dice5;
+			//if player 1's turn, they get the score, otherwise it goes to player two
+					if(p1turn)
+						{
+						p1score = p1score + diceSum;
+						score1.innerHTML = p1score;
+						p1S6--
+						P1S6.innerHTML="Has Scored";
+						}
+					if(p2turn)
+						{
+						p2score = p2score + diceSum;
+						score2.innerHTML = p2score;
+						p2S6--
+						P2S6.innerHTML="Has Scored";
+						}
+			//sets all of the dice values to 0
+					dice1=0
+					dice2=0
+					dice3=0
+					dice4=0
+					dice5=0
+						yesno1[0].checked=false;
+					yesno1[1].checked=false;
+					yesno2[0].checked=false;
+					yesno2[1].checked=false;
+					yesno3[0].checked=false;
+					yesno3[1].checked=false;
+					yesno4[0].checked=false;
+					yesno4[1].checked=false;
+					yesno5[0].checked=false;
+					yesno5[1].checked=false;
+			//because of the subtraction earlier, the roll amount should be negative 1, and this allows this to reset the rolls in both the variable and on the page
+					if(RollAmt == -1)
+						{
+						RollAmt = 3;
+						Rolls.innerHTML=RollAmt;
+			//if it is the player 1's turn, it turns to player two and likewise, also makes all dice value on the page into "Next Player's Turn" to force them to start the new turn
+						if(p1turn)
+							{
+							p1turn=false;
+							p2turn=true;
+							diceOne.src="nextturn.jpg"
+							diceTwo.src="nextturn.jpg"
+							diceThree.src="nextturn.jpg"
+							diceFour.src="nextturn.jpg"
+							diceFive.src="nextturn.jpg"
+							}
+						else if(p2turn)
+							{
+							p2turn=false;
+							p1turn=true;
+							diceOne.src="nextturn.jpg"
+							diceTwo.src="nextturn.jpg"
+							diceThree.src="nextturn.jpg"
+							diceFour.src="nextturn.jpg"
+							diceFive.src="nextturn.jpg"
+							}
+						}
+				}
+		function threeOfKind()
+			{
+			//what happens at the end of any scoring function, all dice values are set to 0, making no functions work so players can't score the same rolls twice
+					if(dice1 == 0)
+					{
+					return
+					}
+			//players can only score if they are out of rolls
+					if(RollAmt == 1 || RollAmt == 2)
+					{
+					alert("Please Use All Rolls")
+					return
+					} 
+			//this alerts players that they can not score the same number twice in the same game (if they are trying to)
+				if(p1turn)
+						{
+						if(p13k == 0)
+							{
+							alert("You Cannot Score This Again!");
+							return
+							}
+						}
+				if (p2turn)
+						{
+						if(p23k == 0)
+							{
+							alert("You Cannot Score This Again!");
+							return
+							}
+						}
+			//subtracts a roll to keep track of how many turns have passed/ how many are remaining
+				RollAmt--
+			//the funtion of three of a kind is having every possible version, so in this if statement, it lists out all of the possible versions of having three of the five dice being the same value
+				if(p1turn)
+				{
+					if(dice1 == dice2 && dice1 == dice3 || dice1 == dice2 && dice1 == dice4 || 
+					dice1 == dice2 && dice1 == dice5 || dice1 == dice3 && dice1 == dice4 || 
+					dice1 == dice3 && dice1 == dice5 || dice1 == dice4 && dice1 == dice5 || 
+					dice2 == dice3 && dice2 == dice4 || dice2 == dice3 && dice2 == dice5 || 
+					dice2 == dice4 && dice2 == dice5 || dice3 == dice4 && dice3 == dice5)
+					{
+			//the score for three of a kind is to score all of the value of the dice, this adds up their respective values 	
+					var diceSum = dice1 + dice2 + dice3 + dice4 + dice5;
+			//these lines add to the score of the respective player
+				p1score =  p1score + diceSum
+					score1.innerHTML = p1score;
+			//this subtracts from the variable that allows the player to use this funtion, stopping them from scoring this in the future
+					p13k--
+					P1S7.innerHTML="Has Scored";
+					}
+				}
+				if(p2turn)
+				{
+					if(dice1 == dice2 && dice1 == dice3 || dice1 == dice2 && dice1 == dice4 || 
+					dice1 == dice2 && dice1 == dice5 || dice1 == dice3 && dice1 == dice4 || 
+					dice1 == dice3 && dice1 == dice5 || dice1 == dice4 && dice1 == dice5 || 
+					dice2 == dice3 && dice2 == dice4 || dice2 == dice3 && dice2 == dice5 || 
+					dice2 == dice4 && dice2 == dice5 || dice3 == dice4 && dice3 == dice5)
+					{
+			//the score for three of a kind is to score all of the value of the dice, this adds up their respective values 	
+					var diceSum = dice1 + dice2 + dice3 + dice4 + dice5;
+			//these lines add to the score of the respective player
+				p1score =  p1score + diceSum
+					score1.innerHTML = p1score;
+			//this subtracts from the variable that allows the player to use this funtion, stopping them from scoring this in the future
+					p23k--
+					P2S7.innerHTML="Has Scored";
+					}
+				}
+			//sets all dice value to zero
+					dice1=0
+					dice2=0
+					dice3=0
+					dice4=0
+					dice5=0
+						yesno1[0].checked=false;
+					yesno1[1].checked=false;
+					yesno2[0].checked=false;
+					yesno2[1].checked=false;
+					yesno3[0].checked=false;
+					yesno3[1].checked=false;
+					yesno4[0].checked=false;
+					yesno4[1].checked=false;
+					yesno5[0].checked=false;
+					yesno5[1].checked=false;
+			//because of the subtracted roll amount in this function, all roll amounts reset and switch whose turn it is		
+				if(RollAmt == -1)
+						{
+						RollAmt = 3;
+						Rolls.innerHTML=RollAmt;
+						if(p1turn)
+							{
+							p1turn=false;
+							p2turn=true;
+							diceOne.src="nextturn.jpg"
+							diceTwo.src="nextturn.jpg"
+							diceThree.src="nextturn.jpg"
+							diceFour.src="nextturn.jpg"
+							diceFive.src="nextturn.jpg"
+							}
+						else if(p2turn)
+							{
+							p2turn=false;
+							p1turn=true;
+							diceOne.src="nextturn.jpg"
+							diceTwo.src="nextturn.jpg"
+							diceThree.src="nextturn.jpg"
+							diceFour.src="nextturn.jpg"
+							diceFive.src="nextturn.jpg"
+							}
+						}
+						}
+		function fourOfKind()
+		{
+			//what happens at the end of any scoring function, all dice values are set to 0, making no functions work so players can't score the same rolls twice
+					if(dice1 == 0)
+					{
+					return
+					}
+			//players can only score if they are out of rolls
+					if(RollAmt == 1 || RollAmt == 2)
+					{
+					alert("Please Use All Rolls")
+					return
+					} 
+			//this alerts players that they can not score the same number twice in the same game (if they are trying to)
+					if(p1turn)
+					{
+					if(p14k == 0)
+						{
+						alert("You Cannot Score This Again!");
+						return
+						}						
+					}
+					if(p2turn)
+					{
+					if(p24k == 0)
+						{						
+						alert("You Cannot Score This Again!");
+						return
+						}
+					}
+			//subtracts another roll
+				RollAmt--
+				if(p1turn)
+					{
+			//has all of the combinations for having 4 dice being the same value
+					if (dice1 == dice2 && dice1 == dice3 && dice1 == dice4 ||
+						dice1 == dice2 && dice1 == dice3 && dice1 == dice5 ||
+						dice1 == dice2 && dice1 == dice4 && dice1 == dice5 ||
+						dice1 == dice3 && dice1 == dice4 && dice1 == dice5 ||
+						dice2 == dice3 && dice2 == dice4 && dice2 == dice5)
+						{
+			//adds the total of the dice for the scoring of this funtion
+						var diceSum = dice1 + dice2 + dice3 + dice4 + dice5;
+						p1score =  p1score + diceSum
+						score1.innerHTML = p1score;
+						p14k--
+						P1S8.innerHTML="Has Scored";
+						}
+					
+					}
+				if(p2turn)
+					{
+			//has all of the combinations for having 4 dice being the same value
+					if (dice1 == dice2 && dice1 == dice3 && dice1 == dice4 ||
+						dice1 == dice2 && dice1 == dice3 && dice1 == dice5 ||
+						dice1 == dice2 && dice1 == dice4 && dice1 == dice5 ||
+						dice1 == dice3 && dice1 == dice4 && dice1 == dice5 ||
+						dice2 == dice3 && dice2 == dice4 && dice2 == dice5)
+						{
+			//adds the total of the dice for the scoring of this funtion
+						var diceSum = dice1 + dice2 + dice3 + dice4 + dice5;
+						p2score =  p2score + diceSum
+						score2.innerHTML = p2score;
+						p24k--
+						P2S8.innerHTML="Has Scored";
+						}
+					
+					}
+			//sets value of dice to zero
+						dice1=0
+						dice2=0
+						dice3=0
+						dice4=0
+						dice5=0
+							yesno1[0].checked=false;
+					yesno1[1].checked=false;
+					yesno2[0].checked=false;
+					yesno2[1].checked=false;
+					yesno3[0].checked=false;
+					yesno3[1].checked=false;
+					yesno4[0].checked=false;
+					yesno4[1].checked=false;
+					yesno5[0].checked=false;
+					yesno5[1].checked=false;
+			//because of the subtracted roll amount in this function, all roll amounts reset and switch whose turn it is			
+						if(RollAmt == -1)
+							{
+							RollAmt = 3;
+							Rolls.innerHTML=RollAmt;
+			//sets the turn to the person who didn't play the last turn
+							if(p1turn)
+								{
+								p1turn=false;
+								p2turn=true;
+								diceOne.src="nextturn.jpg"
+								diceTwo.src="nextturn.jpg"
+								diceThree.src="nextturn.jpg"
+								diceFour.src="nextturn.jpg"
+								diceFive.src="nextturn.jpg"
+								}
+							else if(p2turn)
+								{
+								p2turn=false;
+								p1turn=true;
+								diceOne.src="nextturn.jpg"
+								diceTwo.src="nextturn.jpg"
+								diceThree.src="nextturn.jpg"
+								diceFour.src="nextturn.jpg"
+								diceFive.src="nextturn.jpg"
+								}
+							}	
+							}
+			function fullHouse()
+			{
+			//what happens at the end of any scoring function, all dice values are set to 0, making no functions work so players can't score the same rolls twice
+						if(dice1 == 0)
+						{
+						return
+						}
+			//players can only score if they are out of rolls
+						if(RollAmt == 1 || RollAmt == 2)
+					{
+					alert("Please Use All Rolls")
+					return
+					} 
+			//this alerts players that they can not score the same number twice in the same game (if they are trying to)
+				if(p1turn)
+						{
+						if(p1FH == 0)
+							{
+							alert("You Cannot Score This Again!");
+							return
+							}						
+						}
+				if(p2turn)
+						{
+						if(p2FH == 0)
+							{						
+							alert("You Cannot Score This Again!");
+							return
+							}
+						}
+			//subtracts a roll again
+				RollAmt--
+			//full house is two of one value and three of another, this has all combonations	
+				if(p1turn)
+					{
+					if (dice1 == dice2 && dice1 == dice3 && dice1 != dice4 && dice4 == dice5 ||
+						dice1 == dice2 && dice1 == dice4 && dice1 != dice2 && dice2 == dice5 ||
+						dice1 == dice2 && dice1 == dice5 && dice1 != dice3 && dice3 == dice5 ||
+						dice1 == dice3 && dice1 == dice4 && dice1 != dice5 && dice5 == dice2 ||
+						dice1 == dice3 && dice1 == dice5 && dice1 != dice4 && dice4 == dice2 ||
+						dice1 == dice4 && dice1 == dice5 && dice1 != dice3 && dice3 == dice2 ||
+						dice2 == dice3 && dice2 == dice4 && dice2 != dice1 && dice1 == dice5 ||
+						dice2 == dice3 && dice2 == dice5 && dice2 != dice1 && dice1 == dice4 ||
+						dice2 == dice4 && dice2 == dice5 && dice2 != dice1 && dice1 == dice3 ||
+						dice3 == dice4 && dice3 == dice5 && dice3 != dice1 && dice1 == dice2 )
+						{
+			//score of a full house is 25 		
+						p1score =  p1score + 25
+						score1.innerHTML = p1score;
+						p1FH--
+						P1S9.innerHTML="Has Scored";
+						}
+					
+					}
+			//full house is two of one value and three of another, this has all combonations
+				if(p2turn)
+					{
+					if (dice1 == dice2 && dice1 == dice3 && dice1 != dice4 && dice4 == dice5 ||
+						dice1 == dice2 && dice1 == dice4 && dice1 != dice2 && dice2 == dice5 ||
+						dice1 == dice2 && dice1 == dice5 && dice1 != dice3 && dice3 == dice5 ||
+						dice1 == dice3 && dice1 == dice4 && dice1 != dice5 && dice5 == dice2 ||
+						dice1 == dice3 && dice1 == dice5 && dice1 != dice4 && dice4 == dice2 ||
+						dice1 == dice4 && dice1 == dice5 && dice1 != dice3 && dice3 == dice2 ||
+						dice2 == dice3 && dice2 == dice4 && dice2 != dice1 && dice1 == dice5 ||
+						dice2 == dice3 && dice2 == dice5 && dice2 != dice1 && dice1 == dice4 ||
+						dice2 == dice4 && dice2 == dice5 && dice2 != dice1 && dice1 == dice3 ||
+						dice3 == dice4 && dice3 == dice5 && dice3 != dice1 && dice1 == dice2 )
+						{
+			//score of a full house is 25 				
+						p2score =  p2score + 25
+						score2.innerHTML = p2score;
+						p2FH--
+						P2S9.innerHTML="Has Scored";
+						}
+					
+					}
+			//roll amount should be negative 1, resets roll amount
+				if(RollAmt == -1)
+							{
+							RollAmt = 3;
+							Rolls.innerHTML=RollAmt;
+			//changes turn				
+							if(p1turn)
+								{
+								p1turn=false;
+								p2turn=true;
+								diceOne.src="nextturn.jpg"
+								diceTwo.src="nextturn.jpg"
+								diceThree.src="nextturn.jpg"
+								diceFour.src="nextturn.jpg"
+								diceFive.src="nextturn.jpg"
+								}
+							else if(p2turn)
+								{
+								p2turn=false;
+								p1turn=true;
+								diceOne.src="nextturn.jpg"
+								diceTwo.src="nextturn.jpg"
+								diceThree.src="nextturn.jpg"
+								diceFour.src="nextturn.jpg"
+								diceFive.src="nextturn.jpg"
+								}
+							}
+			//resets dice value to zero
+						dice1=0
+						dice2=0
+						dice3=0
+						dice4=0
+						dice5=0
+					yesno1[0].checked=false;
+					yesno1[1].checked=false;
+					yesno2[0].checked=false;
+					yesno2[1].checked=false;
+					yesno3[0].checked=false;
+					yesno3[1].checked=false;
+					yesno4[0].checked=false;
+					yesno4[1].checked=false;
+					yesno5[0].checked=false;
+					yesno5[1].checked=false;
+			
+			}
+			function smStrt()
+			{
+			//what happens at the end of any scoring function, all dice values are set to 0, making no functions work so players can't score the same rolls twice
+						if(dice1 == 0)
+						{
+						return
+						}
+			//players can only score if they are out of rolls
+						if(RollAmt == 1 || RollAmt == 2)
+					{
+					alert("Please Use All Rolls")
+					return
+					} 
+			//this alerts players that they can not score the same number twice in the same game (if they are trying to)
+				if(p1turn)
+						{
+						if(p1SS == 0)
+							{
+							alert("You Cannot Score This Again!");
+							return
+							}						
+						}
+				if(p2turn)
+						{
+						if(p2SS == 0)
+							{						
+							alert("You Cannot Score This Again!");
+							return
+							}
+						}
+			//subtracts roll
+				RollAmt--
+			//small straight is 4 dice values in a row, this checks for every combonation		
+				if(p1turn)
+					{
+					if (dice1 + 1 == dice2 && dice2 + 1 == dice3 && dice3 + 1 == dice4 ||
+						dice1 + 1 == dice2 && dice2 + 1 == dice3 && dice3 + 1 == dice5 ||
+						dice1 + 1 == dice2 && dice2 + 1 == dice4 && dice4 + 1 == dice3 ||
+						dice1 + 1 == dice2 && dice2 + 1 == dice4 && dice4 + 1 == dice5 ||
+						dice1 + 1 == dice2 && dice2 + 1 == dice5 && dice5 + 1 == dice3 ||
+						dice1 + 1 == dice2 && dice2 + 1 == dice5 && dice5 + 1 == dice4 ||
+						dice1 + 1 == dice3 && dice3 + 1 == dice2 && dice2 + 1 == dice4 ||
+						dice1 + 1 == dice3 && dice3 + 1 == dice2 && dice2 + 1 == dice5 ||
+						dice1 + 1 == dice3 && dice3 + 1 == dice4 && dice4 + 1 == dice2 ||
+						dice1 + 1 == dice3 && dice3 + 1 == dice4 && dice4 + 1 == dice5 ||
+						dice1 + 1 == dice3 && dice3 + 1 == dice5 && dice5 + 1 == dice2 ||
+						dice1 + 1 == dice3 && dice3 + 1 == dice5 && dice5 + 1 == dice4 ||
+						dice1 + 1 == dice4 && dice4 + 1 == dice2 && dice2 + 1 == dice3 ||
+						dice1 + 1 == dice4 && dice4 + 1 == dice2 && dice2 + 1 == dice5 ||
+						dice1 + 1 == dice4 && dice4 + 1 == dice3 && dice3 + 1 == dice2 ||
+						dice1 + 1 == dice4 && dice4 + 1 == dice3 && dice3 + 1 == dice5 ||
+						dice1 + 1 == dice4 && dice4 + 1 == dice5 && dice5 + 1 == dice2 ||
+						dice1 + 1 == dice4 && dice4 + 1 == dice5 && dice5 + 1 == dice3 ||
+						dice1 + 1 == dice5 && dice5 + 1 == dice2 && dice2 + 1 == dice3 ||
+						dice1 + 1 == dice5 && dice5 + 1 == dice2 && dice2 + 1 == dice4 ||
+						dice1 + 1 == dice5 && dice5 + 1 == dice3 && dice3 + 1 == dice2 ||
+						dice1 + 1 == dice5 && dice5 + 1 == dice3 && dice3 + 1 == dice4 ||
+						dice1 + 1 == dice5 && dice5 + 1 == dice4 && dice4 + 1 == dice2 ||
+						dice1 + 1 == dice5 && dice5 + 1 == dice4 && dice4 + 1 == dice3 ||
+						dice2 + 1 == dice1 && dice1 + 1 == dice3 && dice3 + 1 == dice4 ||
+						dice2 + 1 == dice1 && dice1 + 1 == dice3 && dice3 + 1 == dice5 ||
+						dice2 + 1 == dice1 && dice1 + 1 == dice4 && dice4 + 1 == dice3 ||
+						dice2 + 1 == dice1 && dice1 + 1 == dice4 && dice4 + 1 == dice5 ||
+						dice2 + 1 == dice1 && dice1 + 1 == dice5 && dice5 + 1 == dice3 ||
+						dice2 + 1 == dice1 && dice1 + 1 == dice5 && dice5 + 1 == dice4 ||
+						dice2 + 1 == dice3 && dice3 + 1 == dice1 && dice1 + 1 == dice4 ||
+						dice2 + 1 == dice3 && dice3 + 1 == dice1 && dice1 + 1 == dice5 ||
+						dice2 + 1 == dice3 && dice3 + 1 == dice4 && dice4 + 1 == dice1 ||
+						dice2 + 1 == dice3 && dice3 + 1 == dice4 && dice4 + 1 == dice5 ||
+						dice2 + 1 == dice3 && dice3 + 1 == dice5 && dice5 + 1 == dice1 ||
+						dice2 + 1 == dice3 && dice3 + 1 == dice5 && dice5 + 1 == dice4 ||
+						dice2 + 1 == dice4 && dice4 + 1 == dice1 && dice1 + 1 == dice3 ||
+						dice2 + 1 == dice4 && dice4 + 1 == dice1 && dice1 + 1 == dice5 ||
+						dice2 + 1 == dice4 && dice4 + 1 == dice3 && dice3 + 1 == dice1 ||
+						dice2 + 1 == dice4 && dice4 + 1 == dice3 && dice3 + 1 == dice5 ||
+						dice2 + 1 == dice4 && dice4 + 1 == dice5 && dice5 + 1 == dice1 ||
+						dice2 + 1 == dice4 && dice4 + 1 == dice5 && dice5 + 1 == dice3 ||
+						dice2 + 1 == dice5 && dice5 + 1 == dice1 && dice1 + 1 == dice3 ||
+						dice2 + 1 == dice5 && dice5 + 1 == dice1 && dice1 + 1 == dice4 ||
+						dice2 + 1 == dice5 && dice5 + 1 == dice3 && dice3 + 1 == dice1 ||
+						dice2 + 1 == dice5 && dice5 + 1 == dice3 && dice3 + 1 == dice4 ||
+						dice2 + 1 == dice5 && dice5 + 1 == dice4 && dice4 + 1 == dice1 ||
+						dice2 + 1 == dice5 && dice5 + 1 == dice4 && dice4 + 1 == dice3 ||
+						dice3 + 1 == dice1 && dice1 + 1 == dice2 && dice2 + 1 == dice4 ||
+						dice3 + 1 == dice1 && dice1 + 1 == dice2 && dice2 + 1 == dice5 ||
+						dice3 + 1 == dice1 && dice1 + 1 == dice4 && dice4 + 1 == dice2 ||
+						dice3 + 1 == dice1 && dice1 + 1 == dice4 && dice4 + 1 == dice5 ||
+						dice3 + 1 == dice1 && dice1 + 1 == dice5 && dice5 + 1 == dice2 ||
+						dice3 + 1 == dice1 && dice1 + 1 == dice5 && dice5 + 1 == dice4 ||
+						dice3 + 1 == dice2 && dice2 + 1 == dice1 && dice1 + 1 == dice4 ||
+						dice3 + 1 == dice2 && dice2 + 1 == dice1 && dice1 + 1 == dice5 ||
+						dice3 + 1 == dice2 && dice2 + 1 == dice4 && dice4 + 1 == dice1 ||
+						dice3 + 1 == dice2 && dice2 + 1 == dice4 && dice4 + 1 == dice5 ||
+						dice3 + 1 == dice2 && dice2 + 1 == dice5 && dice5 + 1 == dice1 ||
+						dice3 + 1 == dice2 && dice2 + 1 == dice5 && dice5 + 1 == dice4 ||
+						dice3 + 1 == dice4 && dice4 + 1 == dice1 && dice1 + 1 == dice2 ||
+						dice3 + 1 == dice4 && dice4 + 1 == dice1 && dice1 + 1 == dice5 ||
+						dice3 + 1 == dice4 && dice4 + 1 == dice2 && dice2 + 1 == dice1 ||
+						dice3 + 1 == dice4 && dice4 + 1 == dice2 && dice2 + 1 == dice5 ||
+						dice3 + 1 == dice4 && dice4 + 1 == dice5 && dice5 + 1 == dice1 ||
+						dice3 + 1 == dice4 && dice4 + 1 == dice5 && dice5 + 1 == dice2 ||
+						dice3 + 1 == dice5 && dice5 + 1 == dice1 && dice1 + 1 == dice2 ||
+						dice3 + 1 == dice5 && dice5 + 1 == dice1 && dice1 + 1 == dice4 ||
+						dice3 + 1 == dice5 && dice5 + 1 == dice2 && dice2 + 1 == dice1 ||
+						dice3 + 1 == dice5 && dice5 + 1 == dice2 && dice2 + 1 == dice4 ||
+						dice3 + 1 == dice5 && dice5 + 1 == dice4 && dice4 + 1 == dice1 ||
+						dice3 + 1 == dice5 && dice5 + 1 == dice4 && dice4 + 1 == dice2 ||
+						dice4 + 1 == dice1 && dice1 + 1 == dice2 && dice2 + 1 == dice3 ||
+						dice4 + 1 == dice1 && dice1 + 1 == dice2 && dice2 + 1 == dice5 ||
+						dice4 + 1 == dice1 && dice1 + 1 == dice3 && dice3 + 1 == dice2 ||
+						dice4 + 1 == dice1 && dice1 + 1 == dice3 && dice3 + 1 == dice5 ||
+						dice4 + 1 == dice1 && dice1 + 1 == dice5 && dice5 + 1 == dice2 ||
+						dice4 + 1 == dice1 && dice1 + 1 == dice5 && dice5 + 1 == dice3 ||
+						dice4 + 1 == dice2 && dice2 + 1 == dice1 && dice1 + 1 == dice3 ||
+						dice4 + 1 == dice2 && dice2 + 1 == dice1 && dice1 + 1 == dice5 ||
+						dice4 + 1 == dice2 && dice2 + 1 == dice3 && dice3 + 1 == dice1 ||
+						dice4 + 1 == dice2 && dice2 + 1 == dice3 && dice3 + 1 == dice5 ||
+						dice4 + 1 == dice2 && dice2 + 1 == dice5 && dice5 + 1 == dice1 ||
+						dice4 + 1 == dice2 && dice2 + 1 == dice5 && dice5 + 1 == dice3 ||
+						dice4 + 1 == dice3 && dice3 + 1 == dice1 && dice1 + 1 == dice2 ||
+						dice4 + 1 == dice3 && dice3 + 1 == dice1 && dice1 + 1 == dice5 ||
+						dice4 + 1 == dice3 && dice3 + 1 == dice2 && dice2 + 1 == dice1 ||
+						dice4 + 1 == dice3 && dice3 + 1 == dice2 && dice2 + 1 == dice5 ||
+						dice4 + 1 == dice3 && dice3 + 1 == dice5 && dice5 + 1 == dice1 ||
+						dice4 + 1 == dice3 && dice3 + 1 == dice5 && dice5 + 1 == dice2 ||
+						dice4 + 1 == dice5 && dice5 + 1 == dice1 && dice1 + 1 == dice2 ||
+						dice4 + 1 == dice5 && dice5 + 1 == dice1 && dice1 + 1 == dice3 ||
+						dice4 + 1 == dice5 && dice5 + 1 == dice2 && dice2 + 1 == dice1 ||
+						dice4 + 1 == dice5 && dice5 + 1 == dice2 && dice2 + 1 == dice3 ||
+						dice4 + 1 == dice5 && dice5 + 1 == dice3 && dice3 + 1 == dice1 ||
+						dice4 + 1 == dice5 && dice5 + 1 == dice3 && dice3 + 1 == dice2 ||
+						dice5 + 1 == dice1 && dice1 + 1 == dice2 && dice2 + 1 == dice3 ||
+						dice5 + 1 == dice1 && dice1 + 1 == dice2 && dice2 + 1 == dice4 ||
+						dice5 + 1 == dice1 && dice1 + 1 == dice3 && dice3 + 1 == dice2 ||
+						dice5 + 1 == dice1 && dice1 + 1 == dice3 && dice3 + 1 == dice4 ||
+						dice5 + 1 == dice1 && dice1 + 1 == dice4 && dice4 + 1 == dice2 ||
+						dice5 + 1 == dice1 && dice1 + 1 == dice4 && dice4 + 1 == dice3 ||
+						dice5 + 1 == dice2 && dice2 + 1 == dice1 && dice1 + 1 == dice3 ||
+						dice5 + 1 == dice2 && dice2 + 1 == dice1 && dice1 + 1 == dice4 ||
+						dice5 + 1 == dice2 && dice2 + 1 == dice3 && dice3 + 1 == dice1 ||
+						dice5 + 1 == dice2 && dice2 + 1 == dice3 && dice3 + 1 == dice4 ||
+						dice5 + 1 == dice2 && dice2 + 1 == dice4 && dice4 + 1 == dice1 ||
+						dice5 + 1 == dice2 && dice2 + 1 == dice4 && dice4 + 1 == dice3 ||
+						dice5 + 1 == dice3 && dice3 + 1 == dice1 && dice1 + 1 == dice2 ||
+						dice5 + 1 == dice3 && dice3 + 1 == dice1 && dice1 + 1 == dice4 ||
+						dice5 + 1 == dice3 && dice3 + 1 == dice2 && dice2 + 1 == dice1 ||
+						dice5 + 1 == dice3 && dice3 + 1 == dice2 && dice2 + 1 == dice4 ||
+						dice5 + 1 == dice3 && dice3 + 1 == dice4 && dice4 + 1 == dice1 ||
+						dice5 + 1 == dice3 && dice3 + 1 == dice4 && dice4 + 1 == dice2 ||
+						dice5 + 1 == dice4 && dice4 + 1 == dice1 && dice1 + 1 == dice2 ||
+						dice5 + 1 == dice4 && dice4 + 1 == dice1 && dice1 + 1 == dice3 ||
+						dice5 + 1 == dice4 && dice4 + 1 == dice2 && dice2 + 1 == dice1 ||
+						dice5 + 1 == dice4 && dice4 + 1 == dice2 && dice2 + 1 == dice3 ||
+						dice5 + 1 == dice4 && dice4 + 1 == dice3 && dice3 + 1 == dice1 ||
+						dice5 + 1 == dice4 && dice4 + 1 == dice3 && dice3 + 1 == dice2 )
+						{
+			//score is 30 for a small straight
+						p1score =  p1score + 30
+						score1.innerHTML = p1score;
+						p1SS--
+						P1S10.innerHTML="Has Scored";
+						}
+					
+					}
+				if(p2turn)
+					{
+					if (dice1 + 1 == dice2 && dice2 + 1 == dice3 && dice3 + 1 == dice4 ||
+						dice1 + 1 == dice2 && dice2 + 1 == dice3 && dice3 + 1 == dice5 ||
+						dice1 + 1 == dice2 && dice2 + 1 == dice4 && dice4 + 1 == dice3 ||
+						dice1 + 1 == dice2 && dice2 + 1 == dice4 && dice4 + 1 == dice5 ||
+						dice1 + 1 == dice2 && dice2 + 1 == dice5 && dice5 + 1 == dice3 ||
+						dice1 + 1 == dice2 && dice2 + 1 == dice5 && dice5 + 1 == dice4 ||
+						dice1 + 1 == dice3 && dice3 + 1 == dice2 && dice2 + 1 == dice4 ||
+						dice1 + 1 == dice3 && dice3 + 1 == dice2 && dice2 + 1 == dice5 ||
+						dice1 + 1 == dice3 && dice3 + 1 == dice4 && dice4 + 1 == dice2 ||
+						dice1 + 1 == dice3 && dice3 + 1 == dice4 && dice4 + 1 == dice5 ||
+						dice1 + 1 == dice3 && dice3 + 1 == dice5 && dice5 + 1 == dice2 ||
+						dice1 + 1 == dice3 && dice3 + 1 == dice5 && dice5 + 1 == dice4 ||
+						dice1 + 1 == dice4 && dice4 + 1 == dice2 && dice2 + 1 == dice3 ||
+						dice1 + 1 == dice4 && dice4 + 1 == dice2 && dice2 + 1 == dice5 ||
+						dice1 + 1 == dice4 && dice4 + 1 == dice3 && dice3 + 1 == dice2 ||
+						dice1 + 1 == dice4 && dice4 + 1 == dice3 && dice3 + 1 == dice5 ||
+						dice1 + 1 == dice4 && dice4 + 1 == dice5 && dice5 + 1 == dice2 ||
+						dice1 + 1 == dice4 && dice4 + 1 == dice5 && dice5 + 1 == dice3 ||
+						dice1 + 1 == dice5 && dice5 + 1 == dice2 && dice2 + 1 == dice3 ||
+						dice1 + 1 == dice5 && dice5 + 1 == dice2 && dice2 + 1 == dice4 ||
+						dice1 + 1 == dice5 && dice5 + 1 == dice3 && dice3 + 1 == dice2 ||
+						dice1 + 1 == dice5 && dice5 + 1 == dice3 && dice3 + 1 == dice4 ||
+						dice1 + 1 == dice5 && dice5 + 1 == dice4 && dice4 + 1 == dice2 ||
+						dice1 + 1 == dice5 && dice5 + 1 == dice4 && dice4 + 1 == dice3 ||
+						dice2 + 1 == dice1 && dice1 + 1 == dice3 && dice3 + 1 == dice4 ||
+						dice2 + 1 == dice1 && dice1 + 1 == dice3 && dice3 + 1 == dice5 ||
+						dice2 + 1 == dice1 && dice1 + 1 == dice4 && dice4 + 1 == dice3 ||
+						dice2 + 1 == dice1 && dice1 + 1 == dice4 && dice4 + 1 == dice5 ||
+						dice2 + 1 == dice1 && dice1 + 1 == dice5 && dice5 + 1 == dice3 ||
+						dice2 + 1 == dice1 && dice1 + 1 == dice5 && dice5 + 1 == dice4 ||
+						dice2 + 1 == dice3 && dice3 + 1 == dice1 && dice1 + 1 == dice4 ||
+						dice2 + 1 == dice3 && dice3 + 1 == dice1 && dice1 + 1 == dice5 ||
+						dice2 + 1 == dice3 && dice3 + 1 == dice4 && dice4 + 1 == dice1 ||
+						dice2 + 1 == dice3 && dice3 + 1 == dice4 && dice4 + 1 == dice5 ||
+						dice2 + 1 == dice3 && dice3 + 1 == dice5 && dice5 + 1 == dice1 ||
+						dice2 + 1 == dice3 && dice3 + 1 == dice5 && dice5 + 1 == dice4 ||
+						dice2 + 1 == dice4 && dice4 + 1 == dice1 && dice1 + 1 == dice3 ||
+						dice2 + 1 == dice4 && dice4 + 1 == dice1 && dice1 + 1 == dice5 ||
+						dice2 + 1 == dice4 && dice4 + 1 == dice3 && dice3 + 1 == dice1 ||
+						dice2 + 1 == dice4 && dice4 + 1 == dice3 && dice3 + 1 == dice5 ||
+						dice2 + 1 == dice4 && dice4 + 1 == dice5 && dice5 + 1 == dice1 ||
+						dice2 + 1 == dice4 && dice4 + 1 == dice5 && dice5 + 1 == dice3 ||
+						dice2 + 1 == dice5 && dice5 + 1 == dice1 && dice1 + 1 == dice3 ||
+						dice2 + 1 == dice5 && dice5 + 1 == dice1 && dice1 + 1 == dice4 ||
+						dice2 + 1 == dice5 && dice5 + 1 == dice3 && dice3 + 1 == dice1 ||
+						dice2 + 1 == dice5 && dice5 + 1 == dice3 && dice3 + 1 == dice4 ||
+						dice2 + 1 == dice5 && dice5 + 1 == dice4 && dice4 + 1 == dice1 ||
+						dice2 + 1 == dice5 && dice5 + 1 == dice4 && dice4 + 1 == dice3 ||
+						dice3 + 1 == dice1 && dice1 + 1 == dice2 && dice2 + 1 == dice4 ||
+						dice3 + 1 == dice1 && dice1 + 1 == dice2 && dice2 + 1 == dice5 ||
+						dice3 + 1 == dice1 && dice1 + 1 == dice4 && dice4 + 1 == dice2 ||
+						dice3 + 1 == dice1 && dice1 + 1 == dice4 && dice4 + 1 == dice5 ||
+						dice3 + 1 == dice1 && dice1 + 1 == dice5 && dice5 + 1 == dice2 ||
+						dice3 + 1 == dice1 && dice1 + 1 == dice5 && dice5 + 1 == dice4 ||
+						dice3 + 1 == dice2 && dice2 + 1 == dice1 && dice1 + 1 == dice4 ||
+						dice3 + 1 == dice2 && dice2 + 1 == dice1 && dice1 + 1 == dice5 ||
+						dice3 + 1 == dice2 && dice2 + 1 == dice4 && dice4 + 1 == dice1 ||
+						dice3 + 1 == dice2 && dice2 + 1 == dice4 && dice4 + 1 == dice5 ||
+						dice3 + 1 == dice2 && dice2 + 1 == dice5 && dice5 + 1 == dice1 ||
+						dice3 + 1 == dice2 && dice2 + 1 == dice5 && dice5 + 1 == dice4 ||
+						dice3 + 1 == dice4 && dice4 + 1 == dice1 && dice1 + 1 == dice2 ||
+						dice3 + 1 == dice4 && dice4 + 1 == dice1 && dice1 + 1 == dice5 ||
+						dice3 + 1 == dice4 && dice4 + 1 == dice2 && dice2 + 1 == dice1 ||
+						dice3 + 1 == dice4 && dice4 + 1 == dice2 && dice2 + 1 == dice5 ||
+						dice3 + 1 == dice4 && dice4 + 1 == dice5 && dice5 + 1 == dice1 ||
+						dice3 + 1 == dice4 && dice4 + 1 == dice5 && dice5 + 1 == dice2 ||
+						dice3 + 1 == dice5 && dice5 + 1 == dice1 && dice1 + 1 == dice2 ||
+						dice3 + 1 == dice5 && dice5 + 1 == dice1 && dice1 + 1 == dice4 ||
+						dice3 + 1 == dice5 && dice5 + 1 == dice2 && dice2 + 1 == dice1 ||
+						dice3 + 1 == dice5 && dice5 + 1 == dice2 && dice2 + 1 == dice4 ||
+						dice3 + 1 == dice5 && dice5 + 1 == dice4 && dice4 + 1 == dice1 ||
+						dice3 + 1 == dice5 && dice5 + 1 == dice4 && dice4 + 1 == dice2 ||
+						dice4 + 1 == dice1 && dice1 + 1 == dice2 && dice2 + 1 == dice3 ||
+						dice4 + 1 == dice1 && dice1 + 1 == dice2 && dice2 + 1 == dice5 ||
+						dice4 + 1 == dice1 && dice1 + 1 == dice3 && dice3 + 1 == dice2 ||
+						dice4 + 1 == dice1 && dice1 + 1 == dice3 && dice3 + 1 == dice5 ||
+						dice4 + 1 == dice1 && dice1 + 1 == dice5 && dice5 + 1 == dice2 ||
+						dice4 + 1 == dice1 && dice1 + 1 == dice5 && dice5 + 1 == dice3 ||
+						dice4 + 1 == dice2 && dice2 + 1 == dice1 && dice1 + 1 == dice3 ||
+						dice4 + 1 == dice2 && dice2 + 1 == dice1 && dice1 + 1 == dice5 ||
+						dice4 + 1 == dice2 && dice2 + 1 == dice3 && dice3 + 1 == dice1 ||
+						dice4 + 1 == dice2 && dice2 + 1 == dice3 && dice3 + 1 == dice5 ||
+						dice4 + 1 == dice2 && dice2 + 1 == dice5 && dice5 + 1 == dice1 ||
+						dice4 + 1 == dice2 && dice2 + 1 == dice5 && dice5 + 1 == dice3 ||
+						dice4 + 1 == dice3 && dice3 + 1 == dice1 && dice1 + 1 == dice2 ||
+						dice4 + 1 == dice3 && dice3 + 1 == dice1 && dice1 + 1 == dice5 ||
+						dice4 + 1 == dice3 && dice3 + 1 == dice2 && dice2 + 1 == dice1 ||
+						dice4 + 1 == dice3 && dice3 + 1 == dice2 && dice2 + 1 == dice5 ||
+						dice4 + 1 == dice3 && dice3 + 1 == dice5 && dice5 + 1 == dice1 ||
+						dice4 + 1 == dice3 && dice3 + 1 == dice5 && dice5 + 1 == dice2 ||
+						dice4 + 1 == dice5 && dice5 + 1 == dice1 && dice1 + 1 == dice2 ||
+						dice4 + 1 == dice5 && dice5 + 1 == dice1 && dice1 + 1 == dice3 ||
+						dice4 + 1 == dice5 && dice5 + 1 == dice2 && dice2 + 1 == dice1 ||
+						dice4 + 1 == dice5 && dice5 + 1 == dice2 && dice2 + 1 == dice3 ||
+						dice4 + 1 == dice5 && dice5 + 1 == dice3 && dice3 + 1 == dice1 ||
+						dice4 + 1 == dice5 && dice5 + 1 == dice3 && dice3 + 1 == dice2 ||
+						dice5 + 1 == dice1 && dice1 + 1 == dice2 && dice2 + 1 == dice3 ||
+						dice5 + 1 == dice1 && dice1 + 1 == dice2 && dice2 + 1 == dice4 ||
+						dice5 + 1 == dice1 && dice1 + 1 == dice3 && dice3 + 1 == dice2 ||
+						dice5 + 1 == dice1 && dice1 + 1 == dice3 && dice3 + 1 == dice4 ||
+						dice5 + 1 == dice1 && dice1 + 1 == dice4 && dice4 + 1 == dice2 ||
+						dice5 + 1 == dice1 && dice1 + 1 == dice4 && dice4 + 1 == dice3 ||
+						dice5 + 1 == dice2 && dice2 + 1 == dice1 && dice1 + 1 == dice3 ||
+						dice5 + 1 == dice2 && dice2 + 1 == dice1 && dice1 + 1 == dice4 ||
+						dice5 + 1 == dice2 && dice2 + 1 == dice3 && dice3 + 1 == dice1 ||
+						dice5 + 1 == dice2 && dice2 + 1 == dice3 && dice3 + 1 == dice4 ||
+						dice5 + 1 == dice2 && dice2 + 1 == dice4 && dice4 + 1 == dice1 ||
+						dice5 + 1 == dice2 && dice2 + 1 == dice4 && dice4 + 1 == dice3 ||
+						dice5 + 1 == dice3 && dice3 + 1 == dice1 && dice1 + 1 == dice2 ||
+						dice5 + 1 == dice3 && dice3 + 1 == dice1 && dice1 + 1 == dice4 ||
+						dice5 + 1 == dice3 && dice3 + 1 == dice2 && dice2 + 1 == dice1 ||
+						dice5 + 1 == dice3 && dice3 + 1 == dice2 && dice2 + 1 == dice4 ||
+						dice5 + 1 == dice3 && dice3 + 1 == dice4 && dice4 + 1 == dice1 ||
+						dice5 + 1 == dice3 && dice3 + 1 == dice4 && dice4 + 1 == dice2 ||
+						dice5 + 1 == dice4 && dice4 + 1 == dice1 && dice1 + 1 == dice2 ||
+						dice5 + 1 == dice4 && dice4 + 1 == dice1 && dice1 + 1 == dice3 ||
+						dice5 + 1 == dice4 && dice4 + 1 == dice2 && dice2 + 1 == dice1 ||
+						dice5 + 1 == dice4 && dice4 + 1 == dice2 && dice2 + 1 == dice3 ||
+						dice5 + 1 == dice4 && dice4 + 1 == dice3 && dice3 + 1 == dice1 ||
+						dice5 + 1 == dice4 && dice4 + 1 == dice3 && dice3 + 1 == dice2 )
+						{
+			//score is 30 for small straight	
+					p2score =  p2score + 30
+						score2.innerHTML = p2score;
+						p2SS--
+						P2S10.innerHTML="Has Scored";
+						}
+					
+					}
+			//resets roll amounts
+				if(RollAmt == -1)
+							{
+							RollAmt = 3;
+							Rolls.innerHTML=RollAmt;
+			//changes whose turn it is 			
+							if(p1turn)
+								{
+								p1turn=false;
+								p2turn=true;
+								diceOne.src="nextturn.jpg"
+								diceTwo.src="nextturn.jpg"
+								diceThree.src="nextturn.jpg"
+								diceFour.src="nextturn.jpg"
+								diceFive.src="nextturn.jpg"
+								}
+							else if(p2turn)
+								{
+								p2turn=false;
+								p1turn=true;
+								diceOne.src="nextturn.jpg"
+								diceTwo.src="nextturn.jpg"
+								diceThree.src="nextturn.jpg"
+								diceFour.src="nextturn.jpg"
+								diceFive.src="nextturn.jpg"
+								}
+							}
+			//resets dice values to zero
+						dice1=0
+						dice2=0
+						dice3=0
+						dice4=0
+						dice5=0
+							yesno1[0].checked=false;
+					yesno1[1].checked=false;
+					yesno2[0].checked=false;
+					yesno2[1].checked=false;
+					yesno3[0].checked=false;
+					yesno3[1].checked=false;
+					yesno4[0].checked=false;
+					yesno4[1].checked=false;
+					yesno5[0].checked=false;
+					yesno5[1].checked=false;
+			
+			
+			
+			}
+			function lgStrt()
+			{
+			//what happens at the end of any scoring function, all dice values are set to 0, making no functions work so players can't score the same rolls twice
+						if(dice1 == 0)
+						{
+						return
+						}
+			//players can only score if they are out of rolls
+						if(RollAmt == 1 || RollAmt == 2)
+					{
+					alert("Please Use All Rolls")
+					return
+					} 
+			//this alerts players that they can not score the same number twice in the same game (if they are trying to)
+						if(p1turn)
+								{
+								if(p1LS == 0)
+									{
+									alert("You Cannot Score This Again!");
+									return
+									}						
+								}
+						if(p2turn)
+								{
+								if(p2LS == 0)
+									{						
+									alert("You Cannot Score This Again!");
+									return
+									}
+								}
+			//subtracts roll amount	
+						RollAmt--
+			//large straight is 5 of values in a row, all combonations are checked in this if statement
+						if(p1turn)
+							{
+							if (dice1 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice5 + 1 ||
+								dice1 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice5 + 1 && dice5 == dice4 + 1 ||
+								dice1 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice5 + 1 ||
+								dice1 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice3 + 1 ||
+								dice1 == dice2 + 1 && dice2 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice4 + 1 ||
+								dice1 == dice2 + 1 && dice2 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice3 + 1 ||
+								dice1 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice5 + 1 ||
+								dice1 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice5 + 1 && dice5 == dice4 + 1 ||
+								dice1 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice5 + 1 ||
+								dice1 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice2 + 1 ||
+								dice1 == dice3 + 1 && dice3 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice2 + 1 ||
+								dice1 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice5 + 1 ||
+								dice1 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice5 + 1 && dice5 == dice3 + 1 ||
+								dice1 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice5 + 1 ||
+								dice1 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice5 + 1 && dice5 == dice2 + 1 ||
+								dice1 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice3 + 1 ||
+								dice1 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice2 + 1 ||
+								dice1 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice4 + 1 ||
+								dice1 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice3 + 1 ||
+								dice1 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice4 + 1 ||
+								dice1 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice2 + 1 ||
+								dice1 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice3 + 1 ||
+								dice1 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice2 + 1 ||
+								dice2 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice5 + 1 ||
+								dice2 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice5 + 1 && dice5 == dice4 + 1 ||
+								dice2 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice5 + 1 ||
+								dice2 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice3 + 1 ||
+								dice2 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice4 + 1 ||
+								dice2 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice3 + 1 ||
+								dice2 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice5 + 1 ||
+								dice2 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice4 + 1 ||
+								dice2 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice5 + 1 ||
+								dice2 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice1 + 1 ||
+								dice2 == dice3 + 1 && dice3 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice1 + 1 ||
+								dice2 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice5 + 1 ||
+								dice2 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice3 + 1 ||
+								dice2 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice5 + 1 ||
+								dice2 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice5 + 1 && dice5 == dice1 + 1 ||
+								dice2 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice1 + 1 && dice1 == dice3 + 1 ||
+								dice2 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice1 + 1 ||
+								dice2 == dice5 + 1 && dice5 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice4 + 1 ||
+								dice2 == dice5 + 1 && dice5 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice3 + 1 ||
+								dice2 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice4 + 1 ||
+								dice2 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice1 + 1 ||
+								dice2 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice3 + 1 ||
+								dice2 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice1 + 1 ||
+								dice3 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice5 + 1 ||
+								dice3 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice5 + 1 && dice5 == dice4 + 1 ||
+								dice3 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice5 + 1 ||
+								dice3 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice2 + 1 ||
+								dice3 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice4 + 1 ||
+								dice3 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice2 + 1 ||
+								dice3 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice5 + 1 ||
+								dice3 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice4 + 1 ||
+								dice3 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice5 + 1 ||
+								dice3 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice1 + 1 ||
+								dice3 == dice2 + 1 && dice2 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice1 + 1 ||
+								dice3 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice5 + 1 ||
+								dice3 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice2 + 1 ||
+								dice3 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice5 + 1 ||
+								dice3 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice5 + 1 && dice5 == dice1 + 1 ||
+								dice3 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice1 + 1 && dice1 == dice2 + 1 ||
+								dice3 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice1 + 1 ||
+								dice3 == dice5 + 1 && dice5 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice4 + 1 ||
+								dice3 == dice5 + 1 && dice5 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice2 + 1 ||
+								dice3 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice4 + 1 ||
+								dice3 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice1 + 1 ||
+								dice3 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice2 + 1 ||
+								dice3 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice1 + 1 ||
+								dice4 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice5 + 1 ||
+								dice4 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice5 + 1 && dice5 == dice3 + 1 ||
+								dice4 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice5 + 1 ||
+								dice4 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice5 + 1 && dice5 == dice2 + 1 ||
+								dice4 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice3 + 1 ||
+								dice4 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice2 + 1 ||
+								dice4 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice5 + 1 ||
+								dice4 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice3 + 1 ||
+								dice4 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice5 + 1 ||
+								dice4 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice5 + 1 && dice5 == dice1 + 1 ||
+								dice4 == dice2 + 1 && dice2 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice1 + 1 ||
+								dice4 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice5 + 1 ||
+								dice4 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice2 + 1 ||
+								dice4 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice5 + 1 ||
+								dice4 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice5 + 1 && dice5 == dice1 + 1 ||
+								dice4 == dice3 + 1 && dice3 == dice5 + 1 && dice5 == dice1 + 1 && dice1 == dice2 + 1 ||
+								dice4 == dice3 + 1 && dice3 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice1 + 1 ||
+								dice4 == dice5 + 1 && dice5 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice3 + 1 ||
+								dice4 == dice5 + 1 && dice5 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice2 + 1 ||
+								dice4 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice3 + 1 ||
+								dice4 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice1 + 1 ||
+								dice4 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice2 + 1 ||
+								dice4 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice1 + 1 ||
+								dice5 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice4 + 1 ||
+								dice5 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice3 + 1 ||
+								dice5 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice4 + 1 ||
+								dice5 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice2 + 1 ||
+								dice5 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice3 + 1 ||
+								dice5 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice2 + 1 ||
+								dice5 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice4 + 1 ||
+								dice5 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice3 + 1 ||
+								dice5 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice4 + 1 ||
+								dice5 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice1 + 1 ||
+								dice5 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice1 + 1 ||
+								dice5 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice4 + 1 ||
+								dice5 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice2 + 1 ||
+								dice5 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice4 + 1 ||
+								dice5 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice1 + 1 ||
+								dice5 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice2 + 1 ||
+								dice5 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice1 + 1 ||
+								dice5 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice3 + 1 ||
+								dice5 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice2 + 1 ||
+								dice5 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice3 + 1 ||
+								dice5 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice1 + 1 ||
+								dice5 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice2 + 1 ||
+								dice5 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice1 + 1 
+								)
+								{
+			//score for a large straight is 40				
+								p1score =  p1score + 40
+								score1.innerHTML = p1score;
+								p1LS--
+								P1S11.innerHTML="Has Scored";
+								}
+							
+							}
+			//checks for all 4 in a row combinations				
+						if(p2turn)
+							{
+							if (dice1 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice5 + 1 ||
+								dice1 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice5 + 1 && dice5 == dice4 + 1 ||
+								dice1 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice5 + 1 ||
+								dice1 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice3 + 1 ||
+								dice1 == dice2 + 1 && dice2 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice4 + 1 ||
+								dice1 == dice2 + 1 && dice2 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice3 + 1 ||
+								dice1 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice5 + 1 ||
+								dice1 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice5 + 1 && dice5 == dice4 + 1 ||
+								dice1 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice5 + 1 ||
+								dice1 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice2 + 1 ||
+								dice1 == dice3 + 1 && dice3 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice2 + 1 ||
+								dice1 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice5 + 1 ||
+								dice1 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice5 + 1 && dice5 == dice3 + 1 ||
+								dice1 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice5 + 1 ||
+								dice1 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice5 + 1 && dice5 == dice2 + 1 ||
+								dice1 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice3 + 1 ||
+								dice1 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice2 + 1 ||
+								dice1 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice4 + 1 ||
+								dice1 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice3 + 1 ||
+								dice1 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice4 + 1 ||
+								dice1 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice2 + 1 ||
+								dice1 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice3 + 1 ||
+								dice1 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice2 + 1 ||
+								dice2 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice5 + 1 ||
+								dice2 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice5 + 1 && dice5 == dice4 + 1 ||
+								dice2 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice5 + 1 ||
+								dice2 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice3 + 1 ||
+								dice2 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice4 + 1 ||
+								dice2 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice3 + 1 ||
+								dice2 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice5 + 1 ||
+								dice2 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice4 + 1 ||
+								dice2 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice5 + 1 ||
+								dice2 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice1 + 1 ||
+								dice2 == dice3 + 1 && dice3 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice1 + 1 ||
+								dice2 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice5 + 1 ||
+								dice2 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice3 + 1 ||
+								dice2 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice5 + 1 ||
+								dice2 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice5 + 1 && dice5 == dice1 + 1 ||
+								dice2 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice1 + 1 && dice1 == dice3 + 1 ||
+								dice2 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice1 + 1 ||
+								dice2 == dice5 + 1 && dice5 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice4 + 1 ||
+								dice2 == dice5 + 1 && dice5 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice3 + 1 ||
+								dice2 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice4 + 1 ||
+								dice2 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice1 + 1 ||
+								dice2 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice3 + 1 ||
+								dice2 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice1 + 1 ||
+								dice3 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice5 + 1 ||
+								dice3 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice5 + 1 && dice5 == dice4 + 1 ||
+								dice3 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice5 + 1 ||
+								dice3 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice2 + 1 ||
+								dice3 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice4 + 1 ||
+								dice3 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice2 + 1 ||
+								dice3 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice5 + 1 ||
+								dice3 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice4 + 1 ||
+								dice3 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice5 + 1 ||
+								dice3 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice1 + 1 ||
+								dice3 == dice2 + 1 && dice2 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice1 + 1 ||
+								dice3 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice5 + 1 ||
+								dice3 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice2 + 1 ||
+								dice3 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice5 + 1 ||
+								dice3 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice5 + 1 && dice5 == dice1 + 1 ||
+								dice3 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice1 + 1 && dice1 == dice2 + 1 ||
+								dice3 == dice4 + 1 && dice4 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice1 + 1 ||
+								dice3 == dice5 + 1 && dice5 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice4 + 1 ||
+								dice3 == dice5 + 1 && dice5 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice2 + 1 ||
+								dice3 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice4 + 1 ||
+								dice3 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice1 + 1 ||
+								dice3 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice2 + 1 ||
+								dice3 == dice5 + 1 && dice5 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice1 + 1 ||
+								dice4 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice5 + 1 ||
+								dice4 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice5 + 1 && dice5 == dice3 + 1 ||
+								dice4 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice5 + 1 ||
+								dice4 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice5 + 1 && dice5 == dice2 + 1 ||
+								dice4 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice3 + 1 ||
+								dice4 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice2 + 1 ||
+								dice4 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice5 + 1 ||
+								dice4 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice3 + 1 ||
+								dice4 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice5 + 1 ||
+								dice4 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice5 + 1 && dice5 == dice1 + 1 ||
+								dice4 == dice2 + 1 && dice2 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice1 + 1 ||
+								dice4 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice5 + 1 ||
+								dice4 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice5 + 1 && dice5 == dice2 + 1 ||
+								dice4 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice5 + 1 ||
+								dice4 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice5 + 1 && dice5 == dice1 + 1 ||
+								dice4 == dice3 + 1 && dice3 == dice5 + 1 && dice5 == dice1 + 1 && dice1 == dice2 + 1 ||
+								dice4 == dice3 + 1 && dice3 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice1 + 1 ||
+								dice4 == dice5 + 1 && dice5 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice3 + 1 ||
+								dice4 == dice5 + 1 && dice5 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice2 + 1 ||
+								dice4 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice3 + 1 ||
+								dice4 == dice5 + 1 && dice5 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice1 + 1 ||
+								dice4 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice2 + 1 ||
+								dice4 == dice5 + 1 && dice5 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice1 + 1 ||
+								dice5 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice4 + 1 ||
+								dice5 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice3 + 1 ||
+								dice5 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice4 + 1 ||
+								dice5 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice2 + 1 ||
+								dice5 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice3 + 1 ||
+								dice5 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice2 + 1 ||
+								dice5 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice4 + 1 ||
+								dice5 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice3 + 1 ||
+								dice5 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice4 + 1 ||
+								dice5 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice1 + 1 ||
+								dice5 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice1 + 1 ||
+								dice5 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice4 + 1 ||
+								dice5 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice4 + 1 && dice4 == dice2 + 1 ||
+								dice5 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice4 + 1 ||
+								dice5 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice4 + 1 && dice4 == dice1 + 1 ||
+								dice5 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice2 + 1 ||
+								dice5 == dice3 + 1 && dice3 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice1 + 1 ||
+								dice5 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice2 + 1 && dice2 == dice3 + 1 ||
+								dice5 == dice4 + 1 && dice4 == dice1 + 1 && dice1 == dice3 + 1 && dice3 == dice2 + 1 ||
+								dice5 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice1 + 1 && dice1 == dice3 + 1 ||
+								dice5 == dice4 + 1 && dice4 == dice2 + 1 && dice2 == dice3 + 1 && dice3 == dice1 + 1 ||
+								dice5 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice1 + 1 && dice1 == dice2 + 1 ||
+								dice5 == dice4 + 1 && dice4 == dice3 + 1 && dice3 == dice2 + 1 && dice2 == dice1 + 1 
+								)
+								{
+			//adds 40 for large straight 					
+								p2score =  p2score + 40
+								score2.innerHTML = p2score;
+								p2LS--
+								P2S11.innerHTML="Has Scored";
+								}
+							
+							}
+			//resets roll amounts to three		
+						if(RollAmt == -1)
+									{
+									RollAmt = 3;
+									Rolls.innerHTML=RollAmt;
+			//changes players turn						
+									if(p1turn)
+										{
+										p1turn=false;
+										p2turn=true;
+										diceOne.src="nextturn.jpg"
+										diceTwo.src="nextturn.jpg"
+										diceThree.src="nextturn.jpg"
+										diceFour.src="nextturn.jpg"
+										diceFive.src="nextturn.jpg"
+										}
+									else if(p2turn)
+										{
+										p2turn=false;
+										p1turn=true;
+										diceOne.src="nextturn.jpg"
+										diceTwo.src="nextturn.jpg"
+										diceThree.src="nextturn.jpg"
+										diceFour.src="nextturn.jpg"
+										diceFive.src="nextturn.jpg"
+										}
+									}
+			//dice values reset to zero						
+								dice1=0
+								dice2=0
+								dice3=0
+								dice4=0
+								dice5=0
+									yesno1[0].checked=false;
+					yesno1[1].checked=false;
+					yesno2[0].checked=false;
+					yesno2[1].checked=false;
+					yesno3[0].checked=false;
+					yesno3[1].checked=false;
+					yesno4[0].checked=false;
+					yesno4[1].checked=false;
+					yesno5[0].checked=false;
+					yesno5[1].checked=false;
+					
+					}
+					
+			function chance()
+					{
+			//what happens at the end of any scoring function, all dice values are set to 0, making no functions work so players can't score the same rolls twice
+						if(dice1 == 0)
+						{
+						return
+						}
+			//players can only score if they are out of rolls
+						if(RollAmt == 1 || RollAmt == 2)
+					{
+					alert("Please Use All Rolls")
+					return
+					}
+			//this alerts players that they can not score the same number twice in the same game (if they are trying to)
+						if(p1turn)
+								{
+								if(p1CH == 0)
+									{
+									alert("You Cannot Score This Again!");
+									return
+									}						
+								}
+						if(p2turn)
+								{
+								if(p2CH == 0)
+									{						
+									alert("You Cannot Score This Again!");
+									return
+									}
+								}
+			//subtracts from roll amount			
+						RollAmt--
+						if(p1turn)
+							{
+			//chance score is just the adding of all dice values. It works as a free scoring turn				
+								var diceSum = dice1 + dice2 + dice3 + dice4 + dice5;
+								p1score =  p1score + diceSum
+								score1.innerHTML = p1score;
+								p1CH--
+								P1S12.innerHTML="Has Scored";
+							
+							}
+						if(p2turn)
+							{
+			//adds dice sum to score of player					
+								var diceSum = dice1 + dice2 + dice3 + dice4 + dice5;
+								p2score =  p2score + diceSum
+								score2.innerHTML = p2score;
+								p2CH--
+								P2S12.innerHTML="Has Scored";
+								
+							}
+			//resets roll amount value to three		
+						if(RollAmt == -1)
+									{
+									RollAmt = 3;
+									Rolls.innerHTML=RollAmt;
+			//changes whose turn it is						
+									if(p1turn)
+										{
+										p1turn=false;
+										p2turn=true;
+										diceOne.src="nextturn.jpg"
+										diceTwo.src="nextturn.jpg"
+										diceThree.src="nextturn.jpg"
+										diceFour.src="nextturn.jpg"
+										diceFive.src="nextturn.jpg"
+										}
+									else if(p2turn)
+										{
+										p2turn=false;
+										p1turn=true;
+										diceOne.src="nextturn.jpg"
+										diceTwo.src="nextturn.jpg"
+										diceThree.src="nextturn.jpg"
+										diceFour.src="nextturn.jpg"
+										diceFive.src="nextturn.jpg"
+										}
+									}
+			//reset dice value to zero			
+								dice1=0
+								dice2=0
+								dice3=0
+								dice4=0
+								dice5=0
+									yesno1[0].checked=false;
+					yesno1[1].checked=false;
+					yesno2[0].checked=false;
+					yesno2[1].checked=false;
+					yesno3[0].checked=false;
+					yesno3[1].checked=false;
+					yesno4[0].checked=false;
+					yesno4[1].checked=false;
+					yesno5[0].checked=false;
+					yesno5[1].checked=false;
+					
+					
+					}
+
+			function yahtzee()
+			{
+			//what happens at the end of any scoring function, all dice values are set to 0, making no functions work so players can't score the same rolls twice
+						if(dice1 == 0)
+						{
+						return
+						}
+			//players can only score if they are out of rolls
+						if(RollAmt == 1 || RollAmt == 2)
+					{
+					alert("Please Use All Rolls")
+					return
+					} 
+			//this is the only scoring that can be done more than once. The only difference is that 
+			//a Yahtzee is when all dice values are the same		
+						if(dice1 == dice2 == dice3 == dice4 == dice5)
+						{
+			//subtracts from roll amount
+						RollAmt--
+			//this adds 50 for the first yahtzee and 100 for any one after the first.		
+						if(p1turn)
+							{
+							if(p1YZ == 0)
+								{
+								
+									var diceSum = 50;
+									p1score =  p1score + diceSum
+									score1.innerHTML = p1score;
+									p1YZ++
+								
+								}
+							else if(p1YZ > 0)
+								{
+								
+									var diceSum = 100;
+									p1score =  p1score + diceSum
+									score1.innerHTML = p1score;
+									p1YZ++
+								
+								}
+							}	
+							if(p2turn && p2YZ == 0)
+							{
+							
+								var diceSum = 50;
+								p2score =  p2score + diceSum
+								score2.innerHTML = p2score;
+								p2YZ++
+								
+							}
+							if(p2turn && p2YZ > 0)
+							{
+							
+								var diceSum = 100;
+								p2score =  p2score + diceSum
+								score2.innerHTML = p2score;
+								p2YZ++
+							
+							}
+			//resets roll amount values and whose turn it is				
+							if(RollAmt == -1)
+									{
+									RollAmt = 3;
+									Rolls.innerHTML=RollAmt;
+									if(p1turn)
+										{
+										p1turn=false;
+										p2turn=true;
+										diceOne.src="nextturn.jpg"
+										diceTwo.src="nextturn.jpg"
+										diceThree.src="nextturn.jpg"
+										diceFour.src="nextturn.jpg"
+										diceFive.src="nextturn.jpg"
+										}
+									else if(p2turn)
+										{
+										p2turn=false;
+										p1turn=true;
+										diceOne.src="nextturn.jpg"
+										diceTwo.src="nextturn.jpg"
+										diceThree.src="nextturn.jpg"
+										diceFour.src="nextturn.jpg"
+										diceFive.src="nextturn.jpg"
+										}
+									}
+			//resets dice values to zero		
+								dice1=0
+								dice2=0
+								dice3=0
+								dice4=0
+								dice5=0
+									yesno1[0].checked=false;
+					yesno1[1].checked=false;
+					yesno2[0].checked=false;
+					yesno2[1].checked=false;
+					yesno3[0].checked=false;
+					yesno3[1].checked=false;
+					yesno4[0].checked=false;
+					yesno4[1].checked=false;
+					yesno5[0].checked=false;
+					yesno5[1].checked=false;
+						}
+					
+					
+					
+		}
+		
+	
+		
+		function hide()
+		{
+			if(instBtn.value=="Hide Instructions")
+			{
+				instructions.innerHTML="";
+				instBtn.value="Show Instructions"
+			}
+			else if(instBtn.value!="Hide Instructions")
+			{
+				instructions.innerHTML="Welcome to Yahtzee! In this game, your goal is to maximize the amount of points you score. Each turn, you make an initial roll first, then choose dice to keep. You then take the dice you decided to not keep and roll them again. You then choose what dice, out of all of the five, to keep. You finally roll one more time, with the dice being your final ones for that turn. For scoring, if you score a number, your score will be the total of just the number you choose. For example, if you have 4 5s in your dice, and you score your 5s, your score will go up by 20. For the other scoring meathods, for both 3 of a kind and 4 of a kind (having 3 or 4 of the same dice value respectively) your score increases by the total of all of the dice. For full house (having two of one number and three of another), your score increases by 25, regardless of the values of your dice. For small straight (having four dice with consecutive values), your score increases by 30. For a large straight (having five dice with consecutive values), your score increases by 40. Next, for chance (there is no rule to score this), you add up the total value of all of the dice. Finally, for a Yahtzee, for the first one, you get 50 points, and for every one after this, you get 100 points. This is the only one you can score more than once. Every other score can only be used once. Also, if you can not play any of the scores, you choose one of them, and will recieve no points. this counts as your use of that score. Each player gets 12 turns, which are shown at the bottom of the page.";
+				instBtn.value="Hide Instructions"
+			}
+		}
+		function reload()
+		{
+			location.reload();
+		}
+	</script>
+    </head>
+	<body>
+		Yahtzee!<br>
+		<div id=instructions>Welcome to Yahtzee! In this game, your goal is to maximize the amount of points you score. Each turn, you make an initial roll first, then choose dice to keep. You then take the dice you decided to not keep and roll them again. You then choose what dice, out of all of the five, to keep. You finally roll one more time, with the dice being your final ones for that turn. For scoring, if you score a number, your score will be the total of just the number you choose. For example, if you have 4 5s in your dice, and you score your 5s, your score will go up by 20. For the other scoring meathods, for both 3 of a kind and 4 of a kind (having 3 or 4 of the same dice value respectively) your score increases by the total of all of the dice. For full house (having two of one number and three of another), your score increases by 25, regardless of the values of your dice. For small straight (having four dice with consecutive values), your score increases by 30. For a large straight (having five dice with consecutive values), your score increases by 40. Next, for chance (there is no rule to score this), you add up the total value of all of the dice. Finally, for a Yahtzee, for the first one, you get 50 points, and for every one after this, you get 100 points. This is the only one you can score more than once. Every other score can only be used once. Also, if you can not play any of the scores, you choose one of them, and will recieve no points. this counts as your use of that score. Each player gets 12 turns, which are shown at the bottom of the page.</div>
+		<input type="button" class="Btn1" id=instBtn value="Hide Instructions" onclick="hide()" onclick="show">
+		<br><input type="button" class="Btn1"id="btnStart" value="Start Game" onclick="startGame()"><br>
+		<img id="diceOne" ><br>Hold? Yes:<input type="radio" name="choose1">No:<input type="radio" name="choose1"><br>
+		<img id="diceTwo"> <br>Hold?  Yes:<input type="radio" name="choose2">No:<input type="radio" name="choose2"><br>
+		<img id="diceThree"> <br>Hold?  Yes:<input type="radio" name="choose3">No:<input type="radio" name="choose3"><br>
+		<img id="diceFour" ><br>Hold?  Yes:<input type="radio" name="choose4">No:<input type="radio" name="choose4"><br>
+		<img id="diceFive" > <br>Hold?  Yes:<input type="radio" name="choose5">No:<input type="radio" name="choose5"><br>
+		<input type="button" class="Btn1" id="ReRoll" value="Next Roll" onclick="changeDice()"><br>
+		Rolls Remaining: <div id=Rolls></div>
+		<input type="button" class="Btn1" id=button1 value="Score Your 1s" onclick="holdOne()">
+		<input type="button" class="Btn1" id=button2 value="Score Your 2s" onclick="holdTwo()">
+		<input type="button" class="Btn1" id=button3 value="Score Your 3s" onclick="holdThree()">
+		<input type="button" class="Btn1" id=button4 value="Score Your 4s" onclick="holdFour()">
+		<input type="button" class="Btn1" id=button5 value="Score Your 5s" onclick="holdFive()">
+		<input type="button" class="Btn1" id=button6 value="Score Your 6s" onclick="holdSix()"><br>
+		<input type="button" class="Btn1" id=button7 value="Score 3 of a Kind" onclick="threeOfKind()">
+		<input type="button" class="Btn1" id=button8 value="Score 4 of a Kind" onclick="fourOfKind()">
+		<input type="button" class="Btn1" id=button9 value="Score Full House" onclick="fullHouse()">
+		<input type="button" class="Btn1" id=button10 value="Score Small Straight" onclick="smStrt()">
+		<input type="button" class="Btn1" id=button11 value="Score Large Straight" onclick="lgStrt()"><br>
+		<input type="button" class="Btn1" id=button12 value="Chance" onclick="chance()">
+		<input type="button" class="Btn1" id=button13 value="Score Yahtzee!" onclick="yahtzee()"><br>
+		Player 1 score:<div id=score1>0</div><br>
+		Player 1 Remaining Turns:<div id=p1turns>12</div><br>
+		Player 2 score:<div id=score2>0</div><br>
+		Player 2 Remaining Turns<div id=p2turns>12</div><br>
+		<input type=button value="Restart" class="Btn1" id="restartid" onclick="reload()">
+		<center>
+		<table>
+			<tr>
+				<th>Type of Score</th>
+				<th>Player 1</th>
+				<th>Player 2</th>
+			</tr>
+			<tr>
+				<td>Score 1</td>
+				<td id=P1S1>Has Not Used</td>
+				<td id=P2S1>Has Not Used</td>
+			</tr>
+			<tr>
+				<td>Score 2</td>
+				<td id=P1S2>Has Not Used</td>
+				<td id=P2S2>Has Not Used</td>
+			</tr>
+			<tr>
+				<td>Score 3</td>
+				<td id=P1S3>Has Not Used</td>
+				<td id=P2S3>Has Not Used</td>
+			</tr>
+			<tr>
+				<td>Score 4</td>
+				<td id=P1S4>Has Not Used</td>
+				<td id=P2S4>Has Not Used</td>
+			</tr>
+			<tr>
+				<td>Score 5</td>
+				<td id=P1S5>Has Not Used</td>
+				<td id=P2S5>Has Not Used</td>
+			</tr>
+			<tr>
+				<td>Score 6</td>
+				<td id=P1S6>Has Not Used</td>
+				<td id=P2S6>Has Not Used</td>
+			</tr>
+			<tr>
+				<td>Score 3 of a Kind</td>
+				<td id=P1S7>Has Not Used</td>
+				<td id=P2S7>Has Not Used</td>
+			</tr>
+			
+			<tr>
+				<td>Score 4 of a Kind</td>
+				<td id=P1S8>Has Not Used</td>
+				<td id=P2S8>Has Not Used</td>
+				
+			</tr> 
+				<td>Score Full House</td>
+				<td id=P1S9>Has Not Used</td>
+				<td id=P2S9>Has Not Used</td>
+			</tr>
+			<tr>
+				<td>Score Small Straight</td>
+				<td id=P1S10>Has Not Used</td>
+				<td id=P2S10>Has Not Used</td>
+			</tr>
+			<tr>
+				<td>Score Large Straight</td>
+				<td id=P1S11>Has Not Used</td>
+				<td id=P2S11>Has Not Used</td>
+			</tr>
+			<tr>
+				<td>Score Chance</td>
+				<td id=P1S12>Has Not Used</td>
+				<td id=P2S12>Has Not Used</td>
+			</tr>
+			</center>
+			<br>
+	</body>
+</html>
+
+
